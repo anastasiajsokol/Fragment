@@ -12,7 +12,7 @@ class Value {
     public:
         ValueType type;
 
-        virtual Value operator =(const Value&);
+        virtual Value& operator =(const Value&);
 
         virtual Value& operator +=(const Value&);
         virtual Value& operator -=(const Value&);

@@ -14,7 +14,7 @@ class FunctionValue {
         FunctionValue();
         FunctionValue(const Value&);
 
-        Value operator =(const Value&);
+        Value& operator =(const Value&);
 
         Value operator ()(const list<Value>&);
 

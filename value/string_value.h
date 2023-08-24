@@ -12,7 +12,7 @@ class StringValue {
         StringValue();
         StringValue(const Value&);
 
-        Value operator =(const Value&);
+        Value& operator =(const Value&);
 
         Value& operator +=(const Value&);
         Value& operator -=(const Value&);

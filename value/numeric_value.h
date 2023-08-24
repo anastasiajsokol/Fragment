@@ -9,9 +9,9 @@ class NumericValue {
 
     public:
         NumericValue();
-        NumericValue(const Value&);
+        NumericValue(const double&);
 
-        Value operator =(const Value&);
+        Value& operator =(const Value&);
 
         Value& operator +=(const Value&);
         Value& operator -=(const Value&);
