@@ -2,9 +2,10 @@
 #define FRAGMENT_FUNCTION_VALUE_H
 
 #include "value.h"
-#include "../datastructure/list.h"
 
-typedef Value value_function_type(const list<Value>&);
+#include <list>
+
+typedef Value value_function_type(const std::list<Value>&);
 
 class FunctionValue {
     private:
@@ -16,7 +17,7 @@ class FunctionValue {
 
         Value& operator =(const Value&);
 
-        Value operator ()(const list<Value>&);
+        Value operator ()(const std::list<Value>&);
 
         Value& operator +=(const Value&);
         Value& operator -=(const Value&);
