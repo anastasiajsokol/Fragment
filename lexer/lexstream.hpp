@@ -1,10 +1,11 @@
 /**
- *      @file lexer/lexstream.h
+ *      @file lexer/lexstream.hpp
  *      @brief defines LexStream class to convert file path into stream of Tokens
  *      @author Anastasia Sokol
  * 
  *      LexStream is implimented as a std::input_iterator, meaning it can only be iterated over once
  *      to check if the stream is still valid (ie, unread) you can use bool LexStream::is_still_valid() or use the LexStream::operator bool() conversion
+ *      extended .hpp due to limited use of inline functions
 **/
 
 #ifndef LEXER_LEXSTREAM_H
@@ -32,7 +33,6 @@ typedef const char* zstring;                                                // u
 class LexStream {
     private:
         unique_file_ptr source; // represent file, ownership passed to iterator and *never returned* - makes class read once
-        zstring filepath;       // used for keeping track of position when parsing tokens, passed to iterator
 
     public:
         /**
@@ -45,7 +45,7 @@ class LexStream {
             /**
              *  @brief simply passes along const std::string& to std::runtime_error
             **/
-            LexStreamDoubleReadException(const std::string&);
+            LexStreamDoubleReadException(const std::string& message) : std::runtime_error(message) {}
         };
 
         /**
@@ -57,7 +57,7 @@ class LexStream {
         struct LexStreamIterator {
             private:
                 unique_file_ptr input;  // represents file, has full ownership
-                zstring filepath;       // used for error reporting (handled in Token)
+                Token cursor;           // used to store last token read
 
             public:
                 using iterator_category = std::input_iterator_tag;
@@ -70,13 +70,12 @@ class LexStream {
                  *  @brief construct LexStreamIterator, should only be used by LexStream::begin()
                  *  @desc create iterator for tokens in file input, calls LexStreamDoubleReadException if input is a nullptr
                  *  @param input input file to iterate over, claims ownership (must be std::move'd)
-                 *  @param filepath filepath which will be passed to tokens for potential debugging position
                 **/
-                LexStreamIterator(unique_file_ptr input, const zstring filepath) throw(LexStreamDoubleReadException);
+                LexStreamIterator(unique_file_ptr input) throw(LexStreamDoubleReadException);
                 
                 /**
                  *  @brief read next token from file
-                 *  @desc attempts to read the next token from input file, if at end of file does nothing
+                 *  @desc attempts to read the next token from input file, if at end of file does nothing, invalidates past references and pointers
                 **/
                 LexStreamIterator& operator ++() noexcept;
                 
@@ -84,27 +83,35 @@ class LexStream {
                  *  @brief get a const pointer to current token
                  *  @desc this value is read only due to the nature of the input iterator
                 **/
-                const Token *operator ->();
+                inline const Token* operator ->() noexcept {
+                    return &cursor;
+                }
                 
                 /**
                  *  @brief get a const pointer to current token
                  *  @desc this value is read only due to the nature of the input iterator
                 **/
-                const Token *operator *();
+                inline const Token* operator *() noexcept {
+                    return &cursor;
+                }
                 
                 /**
                  *  @brief used to compare to sentenial token value
                  *  @desc checks if type of passed Token is the same as the current token
                  *  @param token token to compare types to, should really only be the sentenial token returned by LexStream::end()
                 **/
-                bool operator ==(const Token&) const noexcept;
+                inline bool operator ==(const Token& token) const noexcept {
+                    return token.type == cursor.type;
+                }
 
                 /**
                  *  @brief used to compare to sentenial token value
                  *  @desc checks if type of passed Token is not the same as the current token
                  *  @param token token to compare types to, should really only be the sentenial token returned by LexStream::end()
                 **/
-                bool operator !=(const Token&) const noexcept;
+                bool operator !=(const Token& token) const noexcept {
+                    return token.type != cursor.type;
+                }
         };
         
         /**
@@ -124,18 +131,22 @@ class LexStream {
          *  @brief get end of file sentenial token
          *  @desc used to allow for ranged for loop, which is how the LexStream class is designed to be used
         **/
-        Token end() const;
+        Token end() const noexcept;
 
         /**
          *  @brief check if LexStream instance is still valid
          *  @desc it is impossible to construct an invalid LexStream, however by reading the iterator (calling LexStream::begin()) the instance is invalidated
         **/
-        bool is_still_valid() const;
+        inline bool is_still_valid() const noexcept {
+            return (bool)source;
+        }
 
         /**
          *  @brief same as LexStream::is_still_valid() | check if LexStream instance is still valid
         **/
-        operator bool() const;
+        inline operator bool() const noexcept {
+            return (bool)source;
+        }
 };
 
 #endif
