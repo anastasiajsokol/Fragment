@@ -17,7 +17,7 @@
 #include <ios>      // defines std::ios_base::failure which may be thrown by LexStream::LexStream()
 #include <memory>   // used to create alias unique_file_ptr which is used to manage std::FILE* ownership
 
-#include <cstdio>   // defines std::FILE
+#include <cstdio>   // defines std::FILE, while ifstream could have been used, by combining with unique_ptr we get move ownership for free
 
 typedef std::unique_ptr<std::FILE, int(*)(std::FILE*)> unique_file_ptr;     // used to represent std::FILE* as a std::unqiue_ptr
 typedef const char* zstring;                                                // used to represent null terminated c style string (refer to c++ core guidlines for why)
