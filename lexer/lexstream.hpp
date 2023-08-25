@@ -110,7 +110,7 @@ class LexStream {
                  *  @desc checks if type of passed Token is not the same as the current token
                  *  @param token token to compare types to, should really only be the sentenial token returned by LexStream::end()
                 **/
-                bool operator !=(const Token& token) const noexcept {
+                inline bool operator !=(const Token& token) const noexcept {
                     return token.type != cursor.type;
                 }
         };
