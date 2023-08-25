@@ -4,7 +4,7 @@
 
 int main(){
     for(const Token& token : LexStream("test/example.fl")){
-        std::printf("Token{(%ld, %ld), %s, test}\n", token.position.line, token.position.index, token.value.c_str());
+        std::printf("Token{(%ld, %ld), %s, %s}\n", token.position.line, token.position.index, token.value.c_str(), to_string(token.type));
     }
     return 0;
 }
