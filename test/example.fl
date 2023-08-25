@@ -1,0 +1,4 @@
+(define add (lambda (a, b) (+ a b)))
+(define main (lambda () (
+    (print (add 2 3))
+)))
