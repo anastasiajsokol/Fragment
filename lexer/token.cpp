@@ -10,6 +10,7 @@
 **/
 
 std::string to_string(const Token::TokenType type){
+    // lookup table corresponding to int representation of Token::TokenType enum
     const char* token_type_string_table[] = {
         "null",
         "end_of_file",
@@ -29,19 +30,20 @@ std::string to_string(const Token::TokenType type){
 
 Token Token::from_string(const std::string& value, const TokenPosition& position) noexcept(false) {
     // tests if a value is in a list
-    const auto in_set = [](auto test, std::vector<decltype(test)> set) -> bool { return std::any_of(set.begin(), set.end(), [test](auto x) -> bool { return x == test; }); };
+    const auto in_set = [value](std::vector<const char*> set) -> bool { return std::any_of(set.begin(), set.end(), [value](auto x) -> bool { return value == x; }); };
     
-    if(value == ")" || value == "("){
+    if(in_set({"(", ")"})){
         return Token(value, position, TokenType::delimiter);
     } else if(std::isdigit(value[0])) {
+        // valid numeric tokens must be all numeric
         if(std::all_of(value.begin(), value.end(), [](char value) -> bool { return std::isdigit(value); })){
             return Token(value, position, TokenType::numeric);
         }
 
         throw InvalidTokenString("Only numeric tokens can start with a numeric digit", position);
-    } else if(in_set(value, {"define", "lambda", "if"})) {
+    } else if(in_set({"define", "lambda", "if"})) {
         return Token(value, position, TokenType::keyword);
-    } else if(in_set(value, {"+", "-", "*", "/", ">", "<", "=", ">=", "<=", "print"})) {
+    } else if(in_set({"+", "-", "*", "/", ">", "<", "=", ">=", "<=", "print"})) {
         return Token(value, position, TokenType::operation);
     } else {
         return Token(value, position, TokenType::reference);
