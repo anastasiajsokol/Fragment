@@ -1,15 +1,14 @@
 /**
  *      @file lexer/token.hpp
- *      @brief defines LexStream class to convert file path into stream of Tokens
+ *      @brief defines Token structure to represent the concept of a token and hold debug information
  *      @author Anastasia Sokol
- * 
+ *          
  *      extended .hpp due to limited use of inline functions
 **/
 
 #ifndef LEXER_TOKEN_H
 #define LEXER_TOKEN_H
 
-#include <exception>
 #include <stdexcept>    // defines std::runtime_error
 #include <string>
 
