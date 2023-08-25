@@ -2,7 +2,7 @@
 
 set -e
 
-g++ main.cpp -o fragment
+g++ lexer/*.cpp main.cpp -o fragment
 
 set +e
 
