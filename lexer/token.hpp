@@ -3,16 +3,24 @@
  *      @brief defines Token structure to represent the concept of a token and hold debug information
  *      @author Anastasia Sokol
  *          
- *      extended .hpp due to limited use of inline functions
+ *      extended .hpp due to limited use of inline constructors
 **/
 
 #ifndef LEXER_TOKEN_H
 #define LEXER_TOKEN_H
 
 #include <stdexcept>    // defines std::runtime_error
-#include <string>
+#include <string>       // defines std::string
 
+/**
+ *  @brief represents symbolic concept of language token
+ * 
+ *  designed to be a normalized form of language morphemes returned by lexstream 
+**/
 struct Token {
+    /**
+     *  @brief alias for refering to type of token morpheme
+    **/
     enum class TokenType {
         null,
         end_of_file,
@@ -23,29 +31,75 @@ struct Token {
         reference
     };
 
+    /**
+     *  @brief represents position inside of a file, used for error reporting messages
+    **/
     struct TokenPosition {
-        ssize_t line;
-        ssize_t index;
+        ssize_t line;   // file line
+        ssize_t index;  // line index
 
+        /**
+         *  @brief default construct position to (1, 1), ie the start of the file
+         *  @desc this can be used to avoid dealing with setting starting position manually but may also be used to avoid needing to manually construct object
+        **/
         inline TokenPosition() : line(1), index(1) {}
+
+        /**
+         *  @brief create position from custom starting point
+         *  @desc generally there are few cases this might be wanted, but it can be used to represent invalid position (-1, -1)
+         *  @param line signed position of line in file, or -1 for invalid line
+         *  @param index signed position of token in line
+        **/
         inline TokenPosition(ssize_t line, ssize_t index) : line(line), index(index) {}
     };
 
+    /**
+     *  @brief represents an attempt to create a token from a string that does not represent a valid token, such as "123dfbdwe" which is an invalid numeric string
+    **/
     struct InvalidTokenString : std::runtime_error {
-        TokenPosition position;
+        TokenPosition position; // represent position of offending token string in file
+
+        /**
+         *  @brief construct InvalidTokenString exception
+         *  @desc forwards message to std::runtime_error and stores position internally
+         *  @param message description of what makes the token string invalid
+         *  @param position the position of the token string in the input file
+        **/
         InvalidTokenString(const std::string& message, const TokenPosition& position) : std::runtime_error(message), position(position) {}
     };
 
-    std::string value;
-    TokenPosition position;
-    TokenType type;
+    std::string value;      // used to store the token string value that the token represents
+    TokenPosition position; // used to store starting position of token string in input file
+    TokenType type;         // tells which language morpheme the token represents
 
+    /**
+     *  @brief create token with given characterists
+     *  @desc should be used sparringly, in general Token::from_string will do a better job validating the token string, useful for making void or end_of_file tokens
+     *  @param value token string value, forwarded to internal constructor
+     *  @param position token string position in input file, forwarded to internal constructor
+     *  @param type token string type, forwarded to internal constructor
+    **/
     inline Token(const std::string& value, const TokenPosition& position, TokenType type) noexcept : value(value), position(position), type(type) {}
+    
+    /**
+     *  @brief creates default (invalid) token
+     *  @desc with a value "Default Constructed" and invalid position and type this does not represent a language morpheme
+    **/
     inline Token() noexcept : value("Default Constructed"), position(TokenPosition{-1, -1}), type(TokenType::null) {}
     
-    static Token from_string(std::string value, TokenPosition position) noexcept(false);
+    /**
+     *  @brief create token from token string
+     *  @desc analyzes token string to decide what type of token to construct, or throws error if it is not a valid token type
+     *  @param value token string to analyze
+     *  @param position position of token string in input file
+    **/
+    static Token from_string(const std::string& value, const TokenPosition& position) noexcept(false);
 };
 
-const char* to_string(Token::TokenType type);
+/**
+ *  @brief convert Token::TokenType into a string representation for development debugging
+ *  @param type type to convert to string
+**/
+std::string to_string(const Token::TokenType type);
 
 #endif

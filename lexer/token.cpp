@@ -9,7 +9,7 @@
  *  Stand alone function definitions
 **/
 
-const char* to_string(Token::TokenType type){
+std::string to_string(const Token::TokenType type){
     const char* token_type_string_table[] = {
         "null",
         "end_of_file",
@@ -27,7 +27,7 @@ const char* to_string(Token::TokenType type){
  *  Implimentation of structure Token
 **/
 
-Token Token::from_string(std::string value, TokenPosition position) noexcept(false) {
+Token Token::from_string(const std::string& value, const TokenPosition& position) noexcept(false) {
     // tests if a value is in a list
     const auto in_set = [](auto test, std::vector<decltype(test)> set) -> bool { return std::any_of(set.begin(), set.end(), [test](auto x) -> bool { return x == test; }); };
     
@@ -41,7 +41,7 @@ Token Token::from_string(std::string value, TokenPosition position) noexcept(fal
         throw InvalidTokenString("Only numeric tokens can start with a numeric digit", position);
     } else if(in_set(value, {"define", "lambda", "if"})) {
         return Token(value, position, TokenType::keyword);
-    } else if(in_set(value, {"+", "-", "*", "/", ">", "<", ">=", "<=", "print"})) {
+    } else if(in_set(value, {"+", "-", "*", "/", ">", "<", "=", ">=", "<=", "print"})) {
         return Token(value, position, TokenType::operation);
     } else {
         return Token(value, position, TokenType::reference);
