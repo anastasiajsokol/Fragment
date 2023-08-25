@@ -78,8 +78,9 @@ class LexStream {
                 /**
                  *  @brief read next token from file
                  *  @desc attempts to read the next token from input file, if at end of file does nothing, invalidates past references and pointers
+                 *  @throws InvalidTokenString
                 **/
-                LexStreamIterator& operator ++() noexcept;
+                LexStreamIterator& operator ++() noexcept(false);
                 
                 /**
                  *  @brief get a const pointer to current token
@@ -127,7 +128,7 @@ class LexStream {
         /**
          *  @brief create LexStreamIterator to start of LexStream
          *  @desc iterator over tokens in LexStream file, only one can be called once for LexStream instance, should not be called directly
-         *  @throws LexStreamDoubleReadException
+         *  @throws LexStreamDoubleReadException, InvalidTokenString
         **/
         LexStreamIterator begin() noexcept(false);
 

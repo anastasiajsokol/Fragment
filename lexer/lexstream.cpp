@@ -42,7 +42,7 @@ LexStream::LexStreamIterator::LexStreamIterator(unique_file_ptr input) noexcept(
     ++*this;
 }
 
-LexStream::LexStreamIterator& LexStream::LexStreamIterator::operator ++() noexcept {
+LexStream::LexStreamIterator& LexStream::LexStreamIterator::operator ++() noexcept(false) {
     // peek ahead to next value
     const auto peek = [](std::FILE* stream) -> int { int value = getc(stream); ungetc(value, stream); return value; };
 
