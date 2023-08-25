@@ -25,7 +25,7 @@ LexStream::LexStreamIterator LexStream::begin() noexcept(false) {
 
 Token LexStream::end() const noexcept {
     // sentenial token
-    return Token{TokenPosition{-1, -1}, "End of File", TokenType::end_of_file};
+    return Token("End of File", TokenPosition{-1, -1}, TokenType::end_of_file);
 }
 
 /**
@@ -91,7 +91,7 @@ LexStream::LexStreamIterator& LexStream::LexStreamIterator::operator ++() noexce
     
     // return token, or return sentenial to signal end of file
     std::optional<std::string> token = next(input.get());
-    cursor = token.has_value() ? Token{start_position, token.value(), TokenType::test} : Token{position, "End of File", TokenType::end_of_file};
+    cursor = token.has_value() ? Token::from_string(token.value(), start_position) : Token("End of File", start_position, TokenType::end_of_file);
     
     // really, here either classify token or have a Token::from_string(std::string, TokenPosition position) function
 
