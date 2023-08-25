@@ -48,7 +48,7 @@ LexStream::LexStreamIterator& LexStream::LexStreamIterator::operator ++() noexce
 
     // wrapper around getc that also updates position
     const auto read = [this](std::FILE* stream) -> int {
-        int value = getc(stream);
+        const int value = getc(stream);
         if(value == '\n'){
             ++this->position.line;
             this->position.index = 0;
@@ -87,10 +87,10 @@ LexStream::LexStreamIterator& LexStream::LexStreamIterator::operator ++() noexce
     };
 
     // copy start of token (reporting start position over end is just slightly cleaner in my opinion)
-    Token::TokenPosition start_position = position;
+    const Token::TokenPosition start_position = position;
     
     // return token, or return sentenial to signal end of file
-    std::optional<std::string> token = next(input.get());
+    const std::optional<std::string> token = next(input.get());
     cursor = token.has_value() ? Token::from_string(token.value(), start_position) : Token("End of File", start_position, Token::TokenType::end_of_file);
     
     return *this;

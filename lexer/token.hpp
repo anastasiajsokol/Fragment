@@ -50,7 +50,7 @@ struct Token {
          *  @param line signed position of line in file, or -1 for invalid line
          *  @param index signed position of token in line
         **/
-        inline TokenPosition(ssize_t line, ssize_t index) : line(line), index(index) {}
+        inline TokenPosition(const ssize_t line, const ssize_t index) : line(line), index(index) {}
     };
 
     /**
@@ -79,7 +79,7 @@ struct Token {
      *  @param position token string position in input file, forwarded to internal constructor
      *  @param type token string type, forwarded to internal constructor
     **/
-    inline Token(const std::string& value, const TokenPosition& position, TokenType type) noexcept : value(value), position(position), type(type) {}
+    inline Token(const std::string& value, const TokenPosition& position, const TokenType type) noexcept : value(value), position(position), type(type) {}
     
     /**
      *  @brief creates default (invalid) token
