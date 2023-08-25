@@ -71,7 +71,7 @@ LexStream::LexStreamIterator& LexStream::LexStreamIterator::operator ++() noexce
         if(ch == EOF){
             return std::nullopt;
         }
-        
+
         // read till terminator
         std::string sequence(1, ch);
 
@@ -93,5 +93,7 @@ LexStream::LexStreamIterator& LexStream::LexStreamIterator::operator ++() noexce
     std::optional<std::string> token = next(input.get());
     cursor = token.has_value() ? Token{start_position, token.value(), TokenType::test} : Token{position, "End of File", TokenType::end_of_file};
     
+    // really, here either classify token or have a Token::from_string(std::string, TokenPosition position) function
+
     return *this;
 }
