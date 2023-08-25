@@ -17,9 +17,15 @@ struct TokenPosition {
 };
 
 struct Token {
-    TokenPosition position;
     std::string value;
+    TokenPosition position;
     TokenType type;
+
+    Token(const std::string& value, const TokenPosition& position, TokenType type) : value(value), position(position), type(type) {}
+
+    static Token from_string(std::string value, TokenPosition position){
+        return Token(value, position, TokenType::test);
+    }
 };
 
 #endif
