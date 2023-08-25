@@ -11,7 +11,7 @@
 #ifndef LEXER_LEXSTREAM_H
 #define LEXER_LEXSTREAM_H
 
-#include "token.h"  // defines structure Token and enum class TokenType
+#include "token.hpp"  // defines structure Token and enum class TokenType
 
 #include <iterator> // used for std::input_iterator_tag, used to tag LexStream::LexStreamIterator as input iterator
 #include <memory>   // used to create alias unique_file_ptr which is used to manage std::FILE* ownership

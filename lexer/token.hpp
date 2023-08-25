@@ -6,15 +6,20 @@
 enum class TokenType {
     end_of_file,
     null,
+
+    delimiter,
+
     test
 };
+
+const char* to_string(TokenType type);
 
 struct TokenPosition {
     ssize_t line;
     ssize_t index;
 
-    TokenPosition() : line(1), index(1) {}
-    TokenPosition(ssize_t line, ssize_t index) : line(line), index(index) {}
+    inline TokenPosition() : line(1), index(1) {}
+    inline TokenPosition(ssize_t line, ssize_t index) : line(line), index(index) {}
 };
 
 struct Token {
@@ -25,9 +30,7 @@ struct Token {
     Token(const std::string& value, const TokenPosition& position, TokenType type) : value(value), position(position), type(type) {}
     Token() : value("Default Constructed"), position(TokenPosition{-1, -1}), type(TokenType::null) {}
     
-    static Token from_string(std::string value, TokenPosition position){
-        return Token(value, position, TokenType::test);
-    }
+    static Token from_string(std::string value, TokenPosition position);
 };
 
 #endif
