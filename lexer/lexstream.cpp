@@ -67,10 +67,11 @@ LexStream::LexStreamIterator& LexStream::LexStreamIterator::operator ++() noexce
         int ch = read(stream);
         while(ch != EOF && std::isspace(ch)){ ch = read(stream); }
 
+        // signal end of file if applicable
         if(ch == EOF){
             return std::nullopt;
         }
-
+        
         // read till terminator
         std::string sequence(1, ch);
 
