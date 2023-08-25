@@ -92,8 +92,8 @@ class LexStream {
                  *  @brief get a const pointer to current token
                  *  @desc this value is read only due to the nature of the input iterator
                 **/
-                inline const Token* operator *() noexcept {
-                    return &cursor;
+                inline const Token& operator *() noexcept {
+                    return cursor;
                 }
                 
                 /**
