@@ -3,7 +3,7 @@
  *      @brief defines LexStream class to convert file path into stream of Tokens
  *      @author Anastasia Sokol
  * 
- *      LexStream is implimented as a std::input_iterator, meaning it can only be iterated over once
+ *      LexStream is implimented as a std::input_iterator, meaning it can only be iterated over once and is readonly
  *      to check if the stream is still valid (ie, unread) you can use bool LexStream::is_still_valid() or use the LexStream::operator bool() conversion
  *      extended .hpp due to limited use of inline functions
 **/
