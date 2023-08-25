@@ -11,6 +11,9 @@ enum class TokenType {
 struct TokenPosition {
     ssize_t line;
     ssize_t index;
+
+    TokenPosition() : line(1), index(1) {}
+    TokenPosition(ssize_t line, ssize_t index) : line(line), index(index) {}
 };
 
 struct Token {
