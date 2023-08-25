@@ -1,15 +1,18 @@
 #ifndef LEXER_TOKEN_H
 #define LEXER_TOKEN_H
 
+#include <exception>
+#include <stdexcept>    // defines std::runtime_error
 #include <string>
 
 enum class TokenType {
-    end_of_file,
     null,
-
+    end_of_file,
     delimiter,
-
-    test
+    numeric,
+    keyword,
+    operation,
+    reference
 };
 
 const char* to_string(TokenType type);
@@ -22,15 +25,20 @@ struct TokenPosition {
     inline TokenPosition(ssize_t line, ssize_t index) : line(line), index(index) {}
 };
 
+struct InvalidTokenString : std::runtime_error {
+    TokenPosition position;
+    InvalidTokenString(const std::string& message, const TokenPosition& position) : std::runtime_error(message), position(position) {}
+};
+
 struct Token {
     std::string value;
     TokenPosition position;
     TokenType type;
 
-    Token(const std::string& value, const TokenPosition& position, TokenType type) : value(value), position(position), type(type) {}
-    Token() : value("Default Constructed"), position(TokenPosition{-1, -1}), type(TokenType::null) {}
+    inline Token(const std::string& value, const TokenPosition& position, TokenType type) noexcept : value(value), position(position), type(type) {}
+    inline Token() noexcept : value("Default Constructed"), position(TokenPosition{-1, -1}), type(TokenType::null) {}
     
-    static Token from_string(std::string value, TokenPosition position);
+    static Token from_string(std::string value, TokenPosition position) noexcept(false);
 };
 
 #endif
