@@ -14,7 +14,6 @@
 #include "token.h"  // defines structure Token and enum class TokenType
 
 #include <iterator> // used for std::input_iterator_tag, used to tag LexStream::LexStreamIterator as input iterator
-#include <ios>      // defines std::ios_base::failure which may be thrown by LexStream::LexStream()
 #include <memory>   // used to create alias unique_file_ptr which is used to manage std::FILE* ownership
 
 #include <cstdio>   // defines std::FILE, while ifstream could have been used, by combining with unique_ptr we get move ownership for free
@@ -71,8 +70,9 @@ class LexStream {
                  *  @brief construct LexStreamIterator, should only be used by LexStream::begin()
                  *  @desc create iterator for tokens in file input, calls LexStreamDoubleReadException if input is a nullptr
                  *  @param input input file to iterate over, claims ownership (must be std::move'd)
+                 *  @throws LexStreamDoubleReadException
                 **/
-                LexStreamIterator(unique_file_ptr input) throw(LexStreamDoubleReadException);
+                LexStreamIterator(unique_file_ptr input) noexcept(false);
                 
                 /**
                  *  @brief read next token from file
@@ -119,14 +119,16 @@ class LexStream {
          *  @brief create a LexStream from the file located at filepath
          *  @desc creates LexStream from zstring path filepath, if unable to open file for reading will throw a std::ios_base_failure exception
          *  @param filepath null terminated c-style string with filepath to input file
+         *  @throws std::ios_base::failure from <ios>
         **/
-        LexStream(zstring const filepath) throw(std::ios_base::failure);
+        LexStream(zstring const filepath) noexcept(false);
         
         /**
          *  @brief create LexStreamIterator to start of LexStream
-         *  @desc used to iterator over tokens in LexStream file, only one can be called once for LexStream instance, should not be called directly
+         *  @desc iterator over tokens in LexStream file, only one can be called once for LexStream instance, should not be called directly
+         *  @throws LexStreamDoubleReadException
         **/
-        LexStreamIterator begin() throw(LexStreamDoubleReadException);
+        LexStreamIterator begin() noexcept(false);
 
         /**
          *  @brief get end of file sentenial token
