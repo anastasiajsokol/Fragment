@@ -28,7 +28,9 @@ struct Token {
         numeric,
         keyword,
         operation,
-        reference
+        reference,
+        stringliteral,
+        boolean
     };
 
     /**

@@ -18,7 +18,9 @@ std::string to_string(const Token::TokenType type){
         "numeric",
         "keyword",
         "operation",
-        "reference"
+        "reference",
+        "stringliteral",
+        "boolean"
     };
 
     return token_type_string_table[(int)type];
@@ -34,6 +36,12 @@ Token Token::from_string(const std::string& value, const TokenPosition& position
     
     if(in_set({"(", ")"})){
         return Token(value, position, TokenType::delimiter);
+    } else if(value[0] == '"'){
+        if(value[value.length() - 1] != '"'){
+            throw InvalidTokenString("Unclosed string, all string literals must end with a closing quotation mark", position);
+        }
+
+        return Token(value.substr(1, value.length() - 2), position, TokenType::stringliteral);
     } else if(std::isdigit(value[0])) {
         // valid numeric tokens must be all numeric
         if(std::all_of(value.begin(), value.end(), [](char value) -> bool { return std::isdigit(value); })){
@@ -41,6 +49,8 @@ Token Token::from_string(const std::string& value, const TokenPosition& position
         }
 
         throw InvalidTokenString("Only numeric tokens can start with a numeric digit", position);
+    } else if(in_set({"true", "false"})) {
+        return Token(value, position, TokenType::boolean);
     } else if(in_set({"define", "lambda", "if"})) {
         return Token(value, position, TokenType::keyword);
     } else if(in_set({"+", "-", "*", "/", ">", "<", "=", ">=", "<=", "print"})) {

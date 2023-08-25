@@ -79,8 +79,14 @@ LexStream::LexStreamIterator& LexStream::LexStreamIterator::operator ++() noexce
             return sequence;
         }
 
-        while(!is_token_terminator(peek(stream))){
-            sequence += ch = read(stream);
+        if(ch == '"'){
+            do {
+                sequence += ch = read(stream);
+            } while(ch != '"' && ch != EOF);
+        } else {
+            while(!is_token_terminator(peek(stream))){
+                sequence += ch = read(stream);
+            }
         }
 
         return sequence;
