@@ -4,12 +4,13 @@
 #include <string>
 
 enum class TokenType {
-    end_of_file
+    end_of_file,
+    test
 };
 
 struct TokenPosition {
-    size_t line;
-    size_t index;
+    ssize_t line;
+    ssize_t index;
 };
 
 struct Token {
