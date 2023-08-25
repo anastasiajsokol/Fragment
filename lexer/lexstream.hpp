@@ -56,9 +56,9 @@ class LexStream {
         **/
         struct LexStreamIterator {
             private:
-                unique_file_ptr input;  // represents file, has full ownership
-                TokenPosition position; // used to keep track of position in file
-                Token cursor;           // used to store last token read
+                unique_file_ptr input;          // represents file, has full ownership
+                Token::TokenPosition position;  // used to keep track of position in file
+                Token cursor;                   // used to store last token read
 
             public:
                 using iterator_category = std::input_iterator_tag;

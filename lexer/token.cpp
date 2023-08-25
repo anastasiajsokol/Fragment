@@ -9,7 +9,7 @@
  *  Stand alone function definitions
 **/
 
-const char* to_string(TokenType type){
+const char* to_string(Token::TokenType type){
     const char* token_type_string_table[] = {
         "null",
         "end_of_file",
