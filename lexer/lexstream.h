@@ -10,28 +10,54 @@
 #ifndef LEXER_LEXSTREAM_H
 #define LEXER_LEXSTREAM_H
 
-#include "token.h"
+#include "token.h"  // defines structure Token and enum class TokenType
 
-#include <iterator>
-#include <ios>
-#include <memory>
+#include <iterator> // used for std::input_iterator_tag, used to tag LexStream::LexStreamIterator as input iterator
+#include <ios>      // defines std::ios_base::failure which may be thrown by LexStream::LexStream()
+#include <memory>   // used to create alias unique_file_ptr which is used to manage std::FILE* ownership
 
-typedef std::unique_ptr<std::FILE, int(*)(FILE*)> unique_file_ptr;  // used to represent std::FILE* as a std::unqiue_ptr
-typedef const char* zstring;                                        // used to represent null terminated c style string (refer to c++ core guidlines for why)
+#include <cstdio>   // defines std::FILE
 
+typedef std::unique_ptr<std::FILE, int(*)(std::FILE*)> unique_file_ptr;     // used to represent std::FILE* as a std::unqiue_ptr
+typedef const char* zstring;                                                // used to represent null terminated c style string (refer to c++ core guidlines for why)
+
+/**
+ *  @brief represents language input file, read only and read once, designed to be used in ranged for loop
+ * 
+ *  designed to be used as a c++ standard container for reading tokens from input file
+ *  read only, read once - meaning that you are not supposed to write to the container, and can only iterate over an instance ONCE
+ *  can not be copied !! if you need a second copy (for some reason, probably doing something wrong) then create a completely new instance
+ *  however, the class can be moved using std::move, though you may be using it wrong if that is something you need to do
+**/
 class LexStream {
     private:
-        unique_file_ptr source;
-        zstring filepath;
+        unique_file_ptr source; // represent file, ownership passed to iterator and *never returned* - makes class read once
+        zstring filepath;       // used for keeping track of position when parsing tokens, passed to iterator
 
     public:
+        /**
+         *  @brief exception raised if an attempt is made to iterate over LexStream a second time
+         * 
+         *  any LexStream instance is invalidated after being iterated over, so attempting to read twice will result in a LexStreamDoubleReadException
+         *  this exception is simply an extension, nearly an alias, of std::runtime_error
+        **/
         struct LexStreamDoubleReadException : public std::runtime_error {
+            /**
+             *  @brief simply passes along const std::string& to std::runtime_error
+            **/
             LexStreamDoubleReadException(const std::string&);
         };
 
+        /**
+         *  @brief read only, read once iterator for LexStream - returns tokens
+         * 
+         *  iterates over file, returning tokens as it goes
+         *  uses sentenial value for end comparison (specifically, a token with type TokenType::end_of_file)
+        **/
         struct LexStreamIterator {
             private:
-                unique_file_ptr input;
+                unique_file_ptr input;  // represents file, has full ownership
+                zstring filepath;       // used for error reporting (handled in Token)
 
             public:
                 using iterator_category = std::input_iterator_tag;
@@ -40,23 +66,75 @@ class LexStream {
                 using pointer           = value_type*;
                 using reference         = value_type&;
 
-                LexStreamIterator(unique_file_ptr input) throw(LexStreamDoubleReadException);
+                /**
+                 *  @brief construct LexStreamIterator, should only be used by LexStream::begin()
+                 *  @desc create iterator for tokens in file input, calls LexStreamDoubleReadException if input is a nullptr
+                 *  @param input input file to iterate over, claims ownership (must be std::move'd)
+                 *  @param filepath filepath which will be passed to tokens for potential debugging position
+                **/
+                LexStreamIterator(unique_file_ptr input, const zstring filepath) throw(LexStreamDoubleReadException);
                 
+                /**
+                 *  @brief read next token from file
+                 *  @desc attempts to read the next token from input file, if at end of file does nothing
+                **/
                 LexStreamIterator& operator ++() noexcept;
                 
+                /**
+                 *  @brief get a const pointer to current token
+                 *  @desc this value is read only due to the nature of the input iterator
+                **/
                 const Token *operator ->();
+                
+                /**
+                 *  @brief get a const pointer to current token
+                 *  @desc this value is read only due to the nature of the input iterator
+                **/
                 const Token *operator *();
                 
+                /**
+                 *  @brief used to compare to sentenial token value
+                 *  @desc checks if type of passed Token is the same as the current token
+                 *  @param token token to compare types to, should really only be the sentenial token returned by LexStream::end()
+                **/
                 bool operator ==(const Token&) const noexcept;
+
+                /**
+                 *  @brief used to compare to sentenial token value
+                 *  @desc checks if type of passed Token is not the same as the current token
+                 *  @param token token to compare types to, should really only be the sentenial token returned by LexStream::end()
+                **/
                 bool operator !=(const Token&) const noexcept;
         };
         
+        /**
+         *  @brief create a LexStream from the file located at filepath
+         *  @desc creates LexStream from zstring path filepath, if unable to open file for reading will throw a std::ios_base_failure exception
+         *  @param filepath null terminated c-style string with filepath to input file
+        **/
         LexStream(zstring const filepath) throw(std::ios_base::failure);
         
+        /**
+         *  @brief create LexStreamIterator to start of LexStream
+         *  @desc used to iterator over tokens in LexStream file, only one can be called once for LexStream instance, should not be called directly
+        **/
         LexStreamIterator begin() throw(LexStreamDoubleReadException);
+
+        /**
+         *  @brief get end of file sentenial token
+         *  @desc used to allow for ranged for loop, which is how the LexStream class is designed to be used
+        **/
         Token end() const;
 
+        /**
+         *  @brief check if LexStream instance is still valid
+         *  @desc it is impossible to construct an invalid LexStream, however by reading the iterator (calling LexStream::begin()) the instance is invalidated
+        **/
         bool is_still_valid() const;
+
+        /**
+         *  @brief same as LexStream::is_still_valid() | check if LexStream instance is still valid
+        **/
         operator bool() const;
 };
 
