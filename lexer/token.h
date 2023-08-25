@@ -5,6 +5,7 @@
 
 enum class TokenType {
     end_of_file,
+    null,
     test
 };
 
@@ -22,7 +23,8 @@ struct Token {
     TokenType type;
 
     Token(const std::string& value, const TokenPosition& position, TokenType type) : value(value), position(position), type(type) {}
-
+    Token() : value("Default Constructed"), position(TokenPosition{-1, -1}), type(TokenType::null) {}
+    
     static Token from_string(std::string value, TokenPosition position){
         return Token(value, position, TokenType::test);
     }
