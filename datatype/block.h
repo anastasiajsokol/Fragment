@@ -22,13 +22,12 @@ struct Block {
     typedef decltype(std::declval<std::list<std::variant<Token, Block>>>().end()) list_iterator_end_type;
 
     std::list<std::variant<Token, Block>> view; // store ordered collection or tokens and blocks that make up the block
+    Token::TokenPosition position;              // store position of first token in block (likely a bracket which should not be stored in view)
 
     void append(std::variant<Token, Block> value);
     
     list_iterator_begin_type begin();
     list_iterator_end_type end();
-
-    Token::TokenPosition position();
 };
 
 #endif
