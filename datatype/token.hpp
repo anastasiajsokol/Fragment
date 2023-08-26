@@ -1,13 +1,13 @@
 /**
- *      @file lexer/token.hpp
+ *      @file datatype/token.hpp
  *      @brief defines Token structure to represent the concept of a token and hold debug information
  *      @author Anastasia Sokol
  *          
  *      extended .hpp due to limited use of inline constructors
 **/
 
-#ifndef LEXER_TOKEN_H
-#define LEXER_TOKEN_H
+#ifndef DATATYPE_TOKEN_H
+#define DATATYPE_TOKEN_H
 
 #include <stdexcept>    // defines std::runtime_error
 #include <string>       // defines std::string
@@ -78,6 +78,8 @@ struct Token {
 /**
  *  @brief convert Token::TokenType into a string representation for development debugging
  *  @param type type to convert to string
+ *  @return std::string represting type
+ *  TODO delete this function (and token.cpp) after done debugging
 **/
 std::string to_string(const Token::TokenType type);
 
