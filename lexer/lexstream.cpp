@@ -8,7 +8,7 @@
 #include <optional>             // defines std::optional which makes reading EOF token strings easier
 #include <vector>               // defines std::vector used as a generic container to wrap initializer list with .begin() and .end() methods
 
-#include <cctype>               // defines std::isspace 
+#include <cctype>               // defines std::isspace and std::isdigit for pattern matching
 
 using std::string_literals::operator ""s;
 using namespace lexer;
