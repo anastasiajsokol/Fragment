@@ -13,11 +13,14 @@
 
 #include "../datatypes/token.hpp"   // defines structure Token and enum class TokenType
 
-#include <iterator>                 // used for std::input_iterator_tag, used to tag LexStream::LexStreamIterator as input iterator
-#include <memory>                   // used to create alias unique_file_ptr which is used to manage std::FILE* ownership
-#include <stdexcept>                // defines std::runtime_error
+#include <iterator>                 // defines std::input_iterator_tag used to tag LexStream::LexStreamIterator as input iterator
+#include <memory>                   // defines std::unique_ptr used to manage std::FILE* ownership
+#include <stdexcept>                // defines std::runtime_error used for LexStreamDoubleReadException
+#include <string>                   // defines std::string used for lexemes
+#include <utility>                  // defines std::pair used for pairing position and lexeme data
+#include <optional>                 // defines std::optional used to manage a failure to read a lexeme due to EOF condition
 
-#include <cstdio>                   // defines std::FILE, while ifstream could have been used, by combining with unique_ptr we get move ownership for free
+#include <cstdio>                   // defines std::FILE used to provide complete control over reading from input file
 
 typedef std::unique_ptr<std::FILE, int(*)(std::FILE*)> unique_file_ptr;     // used to represent std::FILE* as a std::unqiue_ptr
 typedef const char* zstring;                                                // used to represent null terminated c style string (refer to c++ core guidlines for why)
@@ -45,7 +48,24 @@ class LexStream {
             /**
              *  @brief simply passes along const std::string& to std::runtime_error
             **/
-            LexStreamDoubleReadException(const std::string& message) : std::runtime_error(message) {}
+            inline LexStreamDoubleReadException(const std::string& message) noexcept : std::runtime_error(message) {}
+        };
+        
+        /**
+         *  @brief used to report an invalid lexeme that could not be turned into a token
+         * 
+         *  example: "123dfbdwe" which is an invalid numeric lexeme
+        **/
+        struct InvalidLexeme : std::runtime_error {
+            Token::TokenPosition position; // represent position of offending lexeme in the input file
+
+            /**
+             *  @brief construct InvalidLexeme exception
+             *  @desc forwards message to std::runtime_error and stores position internally
+             *  @param message description of what makes the lexeme invalid
+             *  @param position the position of the lexeme in the input file
+            **/
+            inline InvalidLexeme(const std::string& message, const Token::TokenPosition& position) noexcept : std::runtime_error(message), position(position) {}
         };
 
         /**
@@ -59,6 +79,19 @@ class LexStream {
                 unique_file_ptr input;          // represents file, has full ownership
                 Token::TokenPosition position;  // used to keep track of position in file
                 Token cursor;                   // used to store last token read
+
+                /**
+                 *  @brief read next lexeme
+                 *  @desc attempts to read a lexeme from input, if EOF returns std::nullopt, updates position to end of lexeme and returns start of lexeme
+                **/
+                std::optional<std::pair<Token::TokenPosition, std::string>> read_lexeme() noexcept;
+
+                /**
+                 *  @brief convert a Token::TokenPosition, std::string pair into a token
+                 *  @desc attempts to convert an optional pair into a token, if std::nullopt returns end_of_file token
+                 *  @throws InvalidLexeme
+                **/
+                static Token lexeme_to_token(std::optional<std::pair<Token::TokenPosition, std::string>>) noexcept(false);
 
             public:
                 using iterator_category = std::input_iterator_tag;

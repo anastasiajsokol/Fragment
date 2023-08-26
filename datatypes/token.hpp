@@ -55,21 +55,6 @@ struct Token {
         inline TokenPosition(const ssize_t line, const ssize_t index) : line(line), index(index) {}
     };
 
-    /**
-     *  @brief represents an attempt to create a token from a string that does not represent a valid token, such as "123dfbdwe" which is an invalid numeric string
-    **/
-    struct InvalidTokenString : std::runtime_error {
-        TokenPosition position; // represent position of offending token string in file
-
-        /**
-         *  @brief construct InvalidTokenString exception
-         *  @desc forwards message to std::runtime_error and stores position internally
-         *  @param message description of what makes the token string invalid
-         *  @param position the position of the token string in the input file
-        **/
-        InvalidTokenString(const std::string& message, const TokenPosition& position) : std::runtime_error(message), position(position) {}
-    };
-
     std::string value;      // used to store the token string value that the token represents
     TokenPosition position; // used to store starting position of token string in input file
     TokenType type;         // tells which language morpheme the token represents
@@ -88,14 +73,6 @@ struct Token {
      *  @desc with a value "Default Constructed" and invalid position and type this does not represent a language morpheme
     **/
     inline Token() noexcept : value("Default Constructed"), position(TokenPosition{-1, -1}), type(TokenType::null) {}
-    
-    /**
-     *  @brief create token from token string
-     *  @desc analyzes token string to decide what type of token to construct, or throws error if it is not a valid token type
-     *  @param value token string to analyze
-     *  @param position position of token string in input file
-    **/
-    static Token from_string(const std::string& value, const TokenPosition& position) noexcept(false);
 };
 
 /**
