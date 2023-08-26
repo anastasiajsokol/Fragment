@@ -24,10 +24,23 @@ struct Block {
     std::list<std::variant<Token, Block>> view; // store ordered collection or tokens and blocks that make up the block
     Token::TokenPosition position;              // store position of first token in block (likely a bracket which should not be stored in view)
 
-    void append(std::variant<Token, Block> value);
+    /**
+     *  @brief append either a token or another block to this blocks internal view
+     *  @throws std::bad_alloc in the case of a failed allocation
+    **/
+    void append(std::variant<Token, Block>) noexcept(false);
     
-    list_iterator_begin_type begin();
-    list_iterator_end_type end();
+    /**
+     *  @brief equivelent to Block.view.begin()
+     *  @return iterater to start of block view
+    **/
+    list_iterator_begin_type begin() noexcept;
+
+    /**
+     *  @brief equivelent to Block.view.end()
+     *  @return end of block view iterater
+    **/
+    list_iterator_end_type end() noexcept;
 };
 
 #endif
