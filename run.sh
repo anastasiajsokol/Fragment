@@ -2,7 +2,7 @@
 
 set -e
 
-g++ -std=c++17 main.cpp lexer/*.cpp -o fragment
+g++ -std=c++17 main.cpp lexer/*.cpp datatype/*.cpp -o fragment
 
 set +e
 

@@ -1,7 +1,7 @@
 # Makefile for FragmentLisp
 
 TARGET = FragmentLisp
-SRC_FILES = main.cpp lexer/lexstream.cpp
+SRC_FILES = main.cpp lexer/lexstream.cpp datatype/token.cpp
 
 # NO EDITS NEEDED BELOW THIS LINE
 
