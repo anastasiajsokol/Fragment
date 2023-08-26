@@ -67,13 +67,15 @@ class LexStream {
                 /**
                  *  @brief read next lexeme
                  *  @desc attempts to read a lexeme from input, if EOF returns std::nullopt, updates position to end of lexeme and returns start of lexeme
+                 *  @return a pair containing the starting position of the lexeme, and the lexeme as a string if one was there (std::nullopt if EOF)
                 **/
                 std::pair<Token::TokenPosition, std::optional<std::string>> read_lexeme() noexcept;
 
                 /**
                  *  @brief convert a Token::TokenPosition, std::string pair into a token
                  *  @desc attempts to convert an optional pair into a token, if std::nullopt returns end_of_file token
-                 *  @throws InvalidLexeme
+                 *  @throws InvalidLexeme if the lexeme passed is an std::string without a valid lexeme representation
+                 *  @return Token value that the lexeme represented
                 **/
                 static Token lexeme_to_token(const std::pair<Token::TokenPosition, std::optional<std::string>>&) noexcept(false);
 
@@ -88,20 +90,22 @@ class LexStream {
                  *  @brief construct LexStreamIterator, should only be used by LexStream::begin()
                  *  @desc create iterator for tokens in file input, calls LexStreamDoubleReadException if input is a nullptr
                  *  @param input input file to iterate over, claims ownership (must be std::move'd)
-                 *  @throws LexStreamDoubleReadException
+                 *  @throws LexStreamDoubleReadException if input is nullptr
                 **/
                 LexStreamIterator(unique_file_ptr input) noexcept(false);
                 
                 /**
                  *  @brief read next token from file
                  *  @desc attempts to read the next token from input file, if at end of file does nothing, invalidates past references and pointers
-                 *  @throws InvalidTokenString
+                 *  @throws InvalidLexeme from internal call to lexeme_to_token
+                 *  @return reference to LexStreamIterator
                 **/
                 LexStreamIterator& operator ++() noexcept(false);
                 
                 /**
                  *  @brief get a const pointer to current token
                  *  @desc this value is read only due to the nature of the input iterator
+                 *  @return pointer to cursor token
                 **/
                 inline const Token* operator ->() const noexcept {
                     return &cursor;
@@ -110,6 +114,7 @@ class LexStream {
                 /**
                  *  @brief get a const pointer to current token
                  *  @desc this value is read only due to the nature of the input iterator
+                 *  @return reference to cursor token
                 **/
                 inline const Token& operator *() const noexcept {
                     return cursor;
@@ -119,6 +124,7 @@ class LexStream {
                  *  @brief used to compare to sentenial token value
                  *  @desc checks if type of passed Token is the same as the current token
                  *  @param token token to compare types to, should really only be the sentenial token returned by LexStream::end()
+                 *  @return bool representing whether the types of the passed token and the cursor token are equal
                 **/
                 inline bool operator ==(const Token& token) const noexcept {
                     return token.type == cursor.type;
@@ -128,6 +134,7 @@ class LexStream {
                  *  @brief used to compare to sentenial token value
                  *  @desc checks if type of passed Token is not the same as the current token
                  *  @param token token to compare types to, should really only be the sentenial token returned by LexStream::end()
+                 *  @return bool representing whether the types of the passed token and the cursor token are not equal
                 **/
                 inline bool operator !=(const Token& token) const noexcept {
                     return token.type != cursor.type;
@@ -145,19 +152,22 @@ class LexStream {
         /**
          *  @brief create LexStreamIterator to start of LexStream
          *  @desc iterator over tokens in LexStream file, only one can be called once for LexStream instance, should not be called directly
-         *  @throws LexStreamDoubleReadException, InvalidTokenString
+         *  @throws LexStreamDoubleReadException from LexStreamIterator or InvalidLexeme from operator ++()
+         *  @return a LexStreamIterator which can be used to iterate over tokens in file 
         **/
         LexStreamIterator begin() noexcept(false);
 
         /**
          *  @brief get end of file sentenial token
          *  @desc used to allow for ranged for loop, which is how the LexStream class is designed to be used
+         *  @return token representing the end of the file, used as symbollic end for LexStreamIterator
         **/
         Token end() const noexcept;
 
         /**
          *  @brief check if LexStream instance is still valid
          *  @desc it is impossible to construct an invalid LexStream, however by reading the iterator (calling LexStream::begin()) the instance is invalidated
+         *  @return bool representing if LexStream instance is still valid (has not yet been consumed)
         **/
         inline bool is_still_valid() const noexcept {
             return (bool)source;
@@ -165,6 +175,7 @@ class LexStream {
 
         /**
          *  @brief same as LexStream::is_still_valid() | check if LexStream instance is still valid
+         *  @return bool representing if LexStream instance is still valid (has not yet been consumed)
         **/
         inline operator bool() const noexcept {
             return (bool)source;
