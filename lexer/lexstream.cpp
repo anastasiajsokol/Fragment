@@ -1,6 +1,6 @@
 #include "lexstream.hpp"
 
-#include "invalid_lexeme.hpp"   // defines lexer::InvalidLexeme used to report error turning lexemes into tokens
+#include "invalidlexeme.hpp"    // defines lexer::InvalidLexeme used to report error turning lexemes into tokens
 
 #include <algorithm>            // defines std::all_of and std::any_of for pattern matching
 #include <ios>                  // defines std::ios_base::failure which may be thrown by LexStream::LexStream()

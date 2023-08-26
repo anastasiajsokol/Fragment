@@ -1,6 +1,6 @@
 /**
- *      @file lexer/exceptions.hpp
- *      @brief define exception for generic lexing error
+ *      @file lexer/invalidlexeme.hpp
+ *      @brief define exception lexing error
  *      @author Anastasia Sokol
 **/
 
