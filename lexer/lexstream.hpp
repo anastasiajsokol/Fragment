@@ -22,8 +22,9 @@
 
 #include <cstdio>                   // defines std::FILE used to provide complete control over reading from input file
 
+namespace lexer {
+
 typedef std::unique_ptr<std::FILE, int(*)(std::FILE*)> unique_file_ptr;     // used to represent std::FILE* as a std::unqiue_ptr
-typedef const char* zstring;                                                // used to represent null terminated c style string (refer to c++ core guidlines for why)
 
 /**
  *  @brief represents language input file, read only and read once, designed to be used in ranged for loop
@@ -50,24 +51,7 @@ class LexStream {
             **/
             inline LexStreamDoubleReadException(const std::string& message) noexcept : std::runtime_error(message) {}
         };
-
-        /**
-         *  @brief used to report an invalid lexeme that could not be turned into a token
-         * 
-         *  example: "123dfbdwe" which is an invalid numeric lexeme
-        **/
-        struct InvalidLexeme : std::runtime_error {
-            Token::TokenPosition position; // represent position of offending lexeme in the input file
-
-            /**
-             *  @brief construct InvalidLexeme exception
-             *  @desc forwards message to std::runtime_error and stores position internally
-             *  @param message description of what makes the lexeme invalid
-             *  @param position the position of the lexeme in the input file
-            **/
-            inline InvalidLexeme(const std::string& message, const Token::TokenPosition& position) noexcept : std::runtime_error(message), position(position) {}
-        };
-
+        
         /**
          *  @brief read only, read once iterator for LexStream - returns tokens
          * 
@@ -152,11 +136,11 @@ class LexStream {
         
         /**
          *  @brief create a LexStream from the file located at filepath
-         *  @desc creates LexStream from zstring path filepath, if unable to open file for reading will throw a std::ios_base_failure exception
+         *  @desc creates LexStream from c string filepath, if unable to open file for reading will throw a std::ios_base_failure exception
          *  @param filepath null terminated c-style string with filepath to input file
          *  @throws std::ios_base::failure from <ios>
         **/
-        LexStream(zstring const filepath) noexcept(false);
+        LexStream(const char* const filepath) noexcept(false);
         
         /**
          *  @brief create LexStreamIterator to start of LexStream
@@ -186,5 +170,7 @@ class LexStream {
             return (bool)source;
         }
 };
+
+}; // end of namespace lexer
 
 #endif

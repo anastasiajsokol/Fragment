@@ -1,20 +1,23 @@
 #include "lexstream.hpp"
 
-#include <algorithm>    // defines std::all_of and std::any_of for pattern matching
-#include <ios>          // defines std::ios_base::failure which may be thrown by LexStream::LexStream()
-#include <string>       // defines std::string and std::string_literals::operator ""s which are used to manage lexemes
-#include <optional>     // defines std::optional which makes reading EOF token strings easier
-#include <vector>       // defines std::vector used as a generic container to wrap initializer list with .begin() and .end() methods
+#include "invalid_lexeme.hpp"   // defines lexer::InvalidLexeme used to report error turning lexemes into tokens
 
-#include <cctype>       // defines std::isspace 
+#include <algorithm>            // defines std::all_of and std::any_of for pattern matching
+#include <ios>                  // defines std::ios_base::failure which may be thrown by LexStream::LexStream()
+#include <string>               // defines std::string and std::string_literals::operator ""s which are used to manage lexemes
+#include <optional>             // defines std::optional which makes reading EOF token strings easier
+#include <vector>               // defines std::vector used as a generic container to wrap initializer list with .begin() and .end() methods
+
+#include <cctype>               // defines std::isspace 
 
 using std::string_literals::operator ""s;
+using namespace lexer;
 
 /**
  *  Implimentation of class LexStream
 **/
 
-LexStream::LexStream(zstring const filepath) noexcept(false) : source(unique_file_ptr(std::fopen(filepath, "r"), std::fclose)) {
+LexStream::LexStream(const char* const filepath) noexcept(false) : source(unique_file_ptr(std::fopen(filepath, "r"), std::fclose)) {
     // if std::fopen returned nullptr, report error and cancle construction
     if(!source){
         throw std::ios_base::failure("Unable to open file for reading: "s + filepath);
