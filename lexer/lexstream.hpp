@@ -11,7 +11,7 @@
 #ifndef LEXER_LEXSTREAM_H
 #define LEXER_LEXSTREAM_H
 
-#include "../datatypes/token.hpp"   // defines structure Token and enum class TokenType
+#include "../datatype/token.hpp"    // defines structure Token and enum class TokenType
 
 #include <iterator>                 // defines std::input_iterator_tag used to tag LexStream::LexStreamIterator as input iterator
 #include <memory>                   // defines std::unique_ptr used to manage std::FILE* ownership
@@ -50,7 +50,7 @@ class LexStream {
             **/
             inline LexStreamDoubleReadException(const std::string& message) noexcept : std::runtime_error(message) {}
         };
-        
+
         /**
          *  @brief used to report an invalid lexeme that could not be turned into a token
          * 
@@ -84,14 +84,14 @@ class LexStream {
                  *  @brief read next lexeme
                  *  @desc attempts to read a lexeme from input, if EOF returns std::nullopt, updates position to end of lexeme and returns start of lexeme
                 **/
-                std::optional<std::pair<Token::TokenPosition, std::string>> read_lexeme() noexcept;
+                std::pair<Token::TokenPosition, std::optional<std::string>> read_lexeme() noexcept;
 
                 /**
                  *  @brief convert a Token::TokenPosition, std::string pair into a token
                  *  @desc attempts to convert an optional pair into a token, if std::nullopt returns end_of_file token
                  *  @throws InvalidLexeme
                 **/
-                static Token lexeme_to_token(std::optional<std::pair<Token::TokenPosition, std::string>>) noexcept(false);
+                static Token lexeme_to_token(const std::pair<Token::TokenPosition, std::optional<std::string>>&) noexcept(false);
 
             public:
                 using iterator_category = std::input_iterator_tag;

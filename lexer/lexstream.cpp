@@ -1,10 +1,12 @@
 #include "lexstream.hpp"
 
+#include <algorithm>    // defines std::all_of and std::any_of for pattern matching
 #include <ios>          // defines std::ios_base::failure which may be thrown by LexStream::LexStream()
-#include <string>       // used for std::string and std::string_literals::operator ""s;
-#include <optional>     // used for std::optional which makes reading EOF token strings easier
+#include <string>       // defines std::string and std::string_literals::operator ""s which are used to manage lexemes
+#include <optional>     // defines std::optional which makes reading EOF token strings easier
+#include <vector>       // defines std::vector used as a generic container to wrap initializer list with .begin() and .end() methods
 
-#include <cctype>       // used for std::isspace
+#include <cctype>       // defines std::isspace 
 
 using std::string_literals::operator ""s;
 
@@ -42,7 +44,7 @@ LexStream::LexStreamIterator::LexStreamIterator(unique_file_ptr input) noexcept(
     ++*this;
 }
 
-LexStream::LexStreamIterator& LexStream::LexStreamIterator::operator ++() noexcept(false) {
+std::pair<Token::TokenPosition, std::optional<std::string>> LexStream::LexStreamIterator::read_lexeme() noexcept {
     // peek ahead to next value
     const auto peek = [](std::FILE* stream) -> int { int value = getc(stream); ungetc(value, stream); return value; };
 
@@ -92,12 +94,56 @@ LexStream::LexStreamIterator& LexStream::LexStreamIterator::operator ++() noexce
         return sequence;
     };
 
-    // copy start of token (reporting start position over end is just slightly cleaner in my opinion)
+    // save start position
     const Token::TokenPosition start_position = position;
+
+    // get lexeme
+    const std::optional<std::string> lexeme = next(input.get());
+
+    // return the combined pair
+    return std::pair<Token::TokenPosition, std::optional<std::string>>(start_position, lexeme);
+}
+
+Token LexStream::LexStreamIterator::lexeme_to_token(const std::pair<Token::TokenPosition, std::optional<std::string>> &lexeme) noexcept(false) {
+    // early exit if EOF lexeme
+    if(!lexeme.second.has_value()){
+        return Token("End of File", lexeme.first, Token::TokenType::end_of_file);
+    }
+
+    // easier to use
+    const Token::TokenPosition position = lexeme.first;
+    const std::string value = lexeme.second.value();
+
+    // tests if a value is in a list
+    const auto in_set = [value](std::vector<const char*> set) -> bool { return std::any_of(set.begin(), set.end(), [value](auto x) -> bool { return value == x; }); };
     
-    // return token, or return sentenial to signal end of file
-    const std::optional<std::string> token = next(input.get());
-    cursor = token.has_value() ? Token::from_string(token.value(), start_position) : Token("End of File", start_position, Token::TokenType::end_of_file);
-    
+    if(in_set({"(", ")"})){
+        return Token(value, position, Token::TokenType::delimiter);
+    } else if(value[0] == '"'){
+        if(value[value.length() - 1] != '"'){
+            throw InvalidLexeme("Unclosed string, all string literals must end with a closing quotation mark", position);
+        }
+
+        return Token(value.substr(1, value.length() - 2), position, Token::TokenType::stringliteral);
+    } else if(std::isdigit(value[0])) {
+        // valid numeric tokens must be all numeric
+        if(std::all_of(value.begin(), value.end(), [](char value) -> bool { return std::isdigit(value); })){
+            return Token(value, position, Token::TokenType::numeric);
+        }
+
+        throw InvalidLexeme("Only numeric tokens can start with a numeric digit", position);
+    } else if(in_set({"true", "false"})) {
+        return Token(value, position, Token::TokenType::boolean);
+    } else if(in_set({"define", "lambda", "if"})) {
+        return Token(value, position, Token::TokenType::keyword);
+    } else if(in_set({"+", "-", "*", "/", ">", "<", "=", ">=", "<=", "print"})) {
+        return Token(value, position, Token::TokenType::operation);
+    } else {
+        return Token(value, position, Token::TokenType::reference);
+    }
+}
+
+LexStream::LexStreamIterator& LexStream::LexStreamIterator::operator ++() noexcept(false) {
+    cursor = lexeme_to_token(read_lexeme());
     return *this;
 }
