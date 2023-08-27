@@ -28,7 +28,7 @@ struct Block {
      *  @brief append either a token or another block to this blocks internal view
      *  @throws std::bad_alloc in the case of a failed allocation
     **/
-    void append(std::variant<Token, Block>) noexcept(false);
+    Block& append(std::variant<Token, Block>) noexcept(false);
     
     /**
      *  @brief equivelent to Block.view.begin()

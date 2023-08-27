@@ -1,7 +1,8 @@
 #include "block.h"
 
-void Block::append(std::variant<Token, Block> value) {
+Block& Block::append(std::variant<Token, Block> value) {
     view.push_back(value);
+    return *this;
 }
 
 Block::list_iterator_begin_type Block::begin() noexcept {
