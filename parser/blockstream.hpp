@@ -1,9 +1,7 @@
 /**
  *      @file parser/blockstream.hpp
- *      @brief defines LexStream class to convert a token stream into a stream of block objects
+ *      @brief defines template class BlockStream to convert a token stream into a stream of block objects
  *      @author Anastasia Sokol
- * 
- *      TODO: impliment
 **/
 
 #ifndef PARSER_BLOCKSTREAM_H
