@@ -28,7 +28,7 @@ LexStream::LexStreamIterator LexStream::begin() noexcept(false) {
     return LexStream::LexStreamIterator(std::move(source));
 }
 
-Token LexStream::end() const noexcept {
+const Token LexStream::end() const noexcept {
     // sentenial token
     return Token("End of File", Token::TokenPosition{-1, -1}, Token::TokenType::end_of_file);
 }

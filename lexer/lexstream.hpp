@@ -162,7 +162,7 @@ class LexStream {
          *  @desc used to allow for ranged for loop, which is how the LexStream class is designed to be used
          *  @return token representing the end of the file, used as symbollic end for LexStreamIterator
         **/
-        Token end() const noexcept;
+        const Token end() const noexcept;
 
         /**
          *  @brief check if LexStream instance is still valid
