@@ -7,7 +7,10 @@
 #ifndef PARSER_EXPRESSIONSTREAM_H
 #define PARSER_EXPRESSIONSTREAM_H
 
-template <typename container_t>
+#include "../datatype/block.h"  // defines Block which is the type this class converts into expressions
+#include "iteratetypeguard.h"   // defines only_if_iterater_type used to restrict generic containter_t template type
+
+template <typename container_t, only_if_iterater_type(container_t, const Block)>
 class ExpressionStream {
     private:
         // generic types of container iterator
@@ -18,7 +21,7 @@ class ExpressionStream {
         stream_iterator_end_type end_of_stream;         // stores end of iterator
 
     public:
-        ExpressionStream();
+        ExpressionStream(container_t container) : start_of_stream(std::move(container.begin())), end_of_stream(std::move(container.end())) {}
 };
 
 #endif
