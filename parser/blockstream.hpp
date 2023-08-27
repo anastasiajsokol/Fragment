@@ -52,8 +52,14 @@ class BlockStream {
                  *  @brief attempt to read a token from stream, return std::nullopt if stream == end_of_stream
                  *  @return an optional constant token reference
                 **/
-                const Token& next(){
-                    return *(stream == end_of_stream ? stream : ++stream);
+                const Token next(){
+                    Token value = *stream;
+                    
+                    if(stream != end_of_stream){
+                        ++stream;
+                    }
+
+                    return value;
                 }
                 
                 /**
@@ -62,9 +68,9 @@ class BlockStream {
                  *  @return a block object representing structure or with end_of_file token if end of stream reached without starting a block
                 **/
                 Block read_block_from_stream(bool is_starting_block = true) noexcept(false) {
-                    // read first token, should be either std::nullopt or an opening bracket
+                    // read first token of block
                     Token token = next();
-
+                    
                     // handle special case of starting block
                     if(is_starting_block){
                         // end of file is ok for starting block, return end of stream value
@@ -76,17 +82,17 @@ class BlockStream {
                         if(!(token.type == Token::TokenType::delimiter && token.value == "(")){
                             throw InvalidBlock("Top level expression blocks must begin with an opening delimiter '('", token.position);
                         }
-                    }
-                    
-                    // we reached the end of the file (already returned if starting block)
-                    if(token.type == Token::TokenType::end_of_file){
-                        throw InvalidBlock("Unexpected end of file: unclosed expression block scope", token.position);
+
+                        // advance token so that the rest of the function can act like a non-top level block expression
+                        token = next();
                     }
 
                     Block block(token.position);
 
                     while(!(token.value == ")" && token.type == Token::TokenType::delimiter)){
-                        if(token.type == Token::TokenType::delimiter && token.value == "("){
+                        if(token.type == Token::TokenType::end_of_file){
+                            throw InvalidBlock("Unexpected end of file: unclosed expression block scope", token.position);
+                        } else if(token.type == Token::TokenType::delimiter && token.value == "("){
                             block.append(read_block_from_stream(false));
                         } else {
                             block.append(token);
