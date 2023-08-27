@@ -1,7 +1,7 @@
 #ifndef DATATYPE_EXPRESSION_H
 #define DATATYPE_EXPRESSION_H
 
-#include "value.h"  // defines Value which is used to represent a loosely typed value of any of Fragment Lisps base value types
+#include "value.h"  // defines Value which is used to represent a loosely typed value of any of Fragment Lisp's base value types
 
 /**
  *  @brief represents a code expression
