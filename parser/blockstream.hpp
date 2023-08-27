@@ -7,9 +7,9 @@
 #ifndef PARSER_BLOCKSTREAM_H
 #define PARSER_BLOCKSTREAM_H
 
-#include "../datatype/block.h"  // defines Block used to represent a collection of tokens in a structured way
-#include "iteratetypeguard.h"   // defines only_if_iterator_type used to restrict container_t typename
-#include "invalidblock.hpp"     // defines exception parser::InvalidBlock for reporting token streams that do not represent valid blocks
+#include "../datatype/block.h"              // defines Block used to represent a collection of tokens in a structured way
+#include "../utility/iteratetypeguard.h"    // defines exception parser::InvalidBlock for reporting token streams that do not represent valid blocks
+#include "iteratetypeguard.h"               // defines only_if_iterator_type used to restrict container_t typename
 
 namespace parser {
 

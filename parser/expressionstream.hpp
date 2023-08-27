@@ -7,8 +7,8 @@
 #ifndef PARSER_EXPRESSIONSTREAM_H
 #define PARSER_EXPRESSIONSTREAM_H
 
-#include "../datatype/block.h"  // defines Block which is the type this class converts into expressions
-#include "iteratetypeguard.h"   // defines only_if_iterater_type used to restrict generic containter_t template type
+#include "../datatype/block.h"              // defines Block which is the type this class converts into expressions
+#include "../utility/iteratetypeguard.h"    // defines only_if_iterater_type used to restrict generic containter_t template type
 
 template <typename container_t, only_if_iterater_type(container_t, const Block)>
 class ExpressionStream {
