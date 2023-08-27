@@ -24,7 +24,7 @@ struct Block {
     std::list<std::variant<Token, Block>> view; // store ordered collection or tokens and blocks that make up the block
     Token::TokenPosition position;              // store position of first token in block (likely a bracket which should not be stored in view)
 
-    Block(Token::TokenPosition&) noexcept;
+    Block(const Token::TokenPosition) noexcept;
 
     /**
      *  @brief append either a token or another block to this blocks internal view
