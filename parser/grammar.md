@@ -10,5 +10,3 @@ Expression Types
     operator_expression := (operator expression*)
     
     s_expression := (reference expression*)
-
-    force_evaluation_expression := (expression)
