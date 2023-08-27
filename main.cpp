@@ -4,8 +4,9 @@
 #include <cstdio>
 
 int main(){
-    for(const Token& token : lexer::LexStream("test/example_factorial.fl")){
-        std::printf("Token{(%ld, %ld), %s, %s}\n", token.position.line, token.position.index, token.value.c_str(), to_string(token.type).c_str());
+    for(const Block& token : parser::BlockStream(lexer::LexStream("test/example_factorial.fl"))){
+        std::puts("yippee");    
     }
+
     return 0;
 }
