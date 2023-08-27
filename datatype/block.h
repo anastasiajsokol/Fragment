@@ -43,6 +43,12 @@ struct Block {
      *  @return end of block view iterater
     **/
     list_iterator_end_type end() noexcept;
+
+    /**
+     *  @brief get size of view list
+     *  @return view.size()
+    **/
+    size_t size() const noexcept;
 };
 
 #endif

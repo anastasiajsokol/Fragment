@@ -14,3 +14,7 @@ Block::list_iterator_begin_type Block::begin() noexcept {
 Block::list_iterator_end_type Block::end() noexcept {
     return view.end();
 }
+
+size_t Block::size() const noexcept {
+    return view.size();
+}
