@@ -5,6 +5,4 @@
     )
 ))
 
-(define main (lambda (value) 
-    (print "factorial(" value ") = " (factorial 8))
-))
+(print "factorial(" value ") = " (factorial 8))

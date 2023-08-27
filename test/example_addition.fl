@@ -1,4 +1,2 @@
 (define add (lambda (a b) (+ a b)))
-(define main (lambda ()
-    (print "2 + 39 = " (add 2 39))
-))
+(print "2 + 39 = " (add 2 39))
