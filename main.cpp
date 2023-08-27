@@ -1,4 +1,5 @@
 #include "lexer/lexstream.hpp"
+#include "parser/blockstream.hpp"
 
 #include <cstdio>
 
