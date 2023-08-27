@@ -8,6 +8,7 @@
 #define PARSER_BLOCKSTREAM_H
 
 #include "../datatype/block.h"  // defines Block used to represent a collection of tokens in a structured way
+#include "iteratetypeguard.h"   // defines only_if_iterator_type used to restrict container_t typename
 #include "invalidblock.hpp"     // defines exception parser::InvalidBlock for reporting token streams that do not represent valid blocks
 
 namespace parser {
@@ -20,7 +21,7 @@ namespace parser {
  *  can not be copied !! if you need a second copy (for some reason, probably doing something wrong) then create a completely new instance
  *  however, the class can be moved using std::move
 **/
-template <typename container_t>
+template <typename container_t, only_if_iterater_type(container_t, const Token)>
 class BlockStream {
     private:
         // generic types of container iterator
