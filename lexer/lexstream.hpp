@@ -32,7 +32,7 @@ typedef std::unique_ptr<std::FILE, int(*)(std::FILE*)> unique_file_ptr;     // u
  *  designed to be used as a c++ standard container for reading tokens from input file
  *  read only, read once - meaning that you are not supposed to write to the container, and can only iterate over an instance ONCE
  *  can not be copied !! if you need a second copy (for some reason, probably doing something wrong) then create a completely new instance
- *  however, the class can be moved using std::move, though you may be using it wrong if that is something you need to do
+ *  however, the class can be moved using std::move
 **/
 class LexStream {
     private:
