@@ -10,9 +10,9 @@
 #define PARSER_BLOCKSTREAM_H
 
 #include "../datatype/block.h"
+#include "invalidblock.hpp"
 
 #include <stdexcept>    // defines std::runtime_error used for BlockStreamDoubleReadException
-#include <optional>     // defines std::optional for operations that may reach an end of stream
 
 namespace parser {
 
@@ -52,73 +52,127 @@ class BlockStream {
                  *  @brief attempt to read a token from stream, return std::nullopt if stream == end_of_stream
                  *  @return an optional constant token reference
                 **/
-                std::optional<const Token&> next();
-
+                const Token& next(){
+                    return *(stream == end_of_stream ? stream : ++stream);
+                }
+                
                 /**
                  *  @brief attempts to read a complete block from stream
                  *  @desc uses next() to recursively read a blocks until the top level block is formed, or an exception state is reached
                  *  @return a block object representing structure or with end_of_file token if end of stream reached without starting a block
                 **/
-                Block read_block_from_stream() noexcept(false);
+                Block read_block_from_stream(bool is_starting_block = true) noexcept(false) {
+                    // read first token, should be either std::nullopt or an opening bracket
+                    const Token &token = next();
+
+                    // handle special case of starting block
+                    if(is_starting_block){
+                        // end of file is ok for starting block, return end of stream value
+                        if(token.type == Token::TokenType::end_of_file){
+                            return Block(token.position).append(token);
+                        }
+
+                        // if not end of file, must begin with openning delimiter
+                        if(!(token.type == Token::TokenType::delimiter && token.value == "(")){
+                            throw InvalidBlock("Top level expression blocks must begin with an opening delimiter '('", token.position);
+                        }
+                    }
+                    
+                    // we reached the end of the file (already returned if starting block)
+                    if(token.type == Token::TokenType::end_of_file){
+                        throw InvalidBlock("Unexpected end of file: unclosed expression block scope", token.position);
+                    }
+
+                    Block block(token.position);
+
+                    while(!(token.value == ')' && token.type == Token::TokenType::delimiter)){
+                        if(token.type == Token::TokenType::delimiter && token.value == "("){
+                            block.append(read_block_from_stream(false));
+                        } else {
+                            block.append(token);
+                        }
+                        token = next();
+                    }
+
+                    return block;
+                }
 
             public:
                 /**
                  *  @brief create iterator from container
                  *  @desc uses passed container to construct iterater, note that what happens will depend on container type
+                 *  @param container an iterable container to use for token stream
                 */
-                BlockStreamIterator(container_t);
+                BlockStreamIterator(stream_iterator_begin_type begin, const stream_iterator_end_type end) : stream(begin), end_of_stream(end) {
+                    ++*this; // set cursor to first block
+                }
                 
                 /**
                  *  @brief increment cursor to next block
                  *  @desc calls read_block_from_stream
                  *  @return reference to stream 
                 **/
-                BlockStreamIterator& operator ++() noexcept(false);
+                BlockStreamIterator& operator ++() noexcept(false) {
+                    cursor = read_block_from_stream();
+                }
 
                 /**
                  *  @brief access block cursor
                  *  @desc pointer is invalidated after a call to operator ++()
                  *  @return a constant pointer to the block cursor 
                 **/
-                const Block* operator ->() const noexcept;
+                inline const Block* operator ->() const noexcept {
+                    return &cursor;
+                }
 
                 /**
                  *  @brief access block cursor
                  *  @desc reference is invalidated after a call to operator ++()
                  *  @return a constant reference to the block cursor 
                 **/
-                const Block& operator *() const noexcept;
+                inline const Block& operator *() const noexcept {
+                    return cursor;
+                }
 
                 /**
                  *  @brief check if block has one element with end_of_file token and that cursor is the same
+                 *  @param block the value to check if end_of_file token
                  *  @return bool signifing if the end of the stream has been reached 
                 **/
-                bool operator ==(const Block&);
+                inline bool operator ==(const Block& block){
+                    return block.size() == 1 && block.size() == cursor.size() && std::holds_alternative<Token>(block.view.front()) && std::holds_alternative<Token>(cursor.view.front()) && block.view.front().type == Token::TokenType::end_of_file && cursor.view.front().type == Token::TokenType::end_of_file;
+                }
 
                 /**
                  *  @brief not operator ==
                  *  @return bool representing the negation of operator ==
                 **/
-                bool operator !=(const Block&);
+                inline bool operator !=(const Block& block){
+                    return !(*this == block);
+                }
         };
 
         /**
          *  @brief construct BlockStream with given container
          *  @param container object that will have .begin() and .end() called on it
         **/
-        BlockStream(container_t);
+        BlockStream(container_t container) : start_of_stream(container.begin()), end_of_stream(container.end()) {}
 
         /**
          *  @brief get iterator to start of block stream, only ensured to be valid once
          *  @return iterator to start of block stream
         **/
-        BlockStreamIterator begin();
+        BlockStreamIterator begin(){
+            return BlockStreamIterator(std::move(start_of_stream), std::move(end_of_stream));
+        }
 
         /**
          *  @brief ending value for block stream iterator
          *  @return returns a block with only one token of type end_of_stream
         **/
-        Block end() const;
+        const Block end() const {
+            return Block(token.position).append(Token("End of File", Token::TokenPosition{-1, -1}, Token::TokenType::end_of_file));
+        }
 };
 
 }; // end of namespace parser
