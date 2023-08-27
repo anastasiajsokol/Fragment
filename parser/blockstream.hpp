@@ -31,8 +31,8 @@ class BlockStream {
         typedef decltype(std::declval<container_t>().begin()) stream_iterator_begin_type;
         typedef decltype(std::declval<container_t>().end()) stream_iterator_end_type;
 
-        const stream_iterator_begin_type start_of_stream;   // stores iterator to start of container
-        const stream_iterator_end_type end_of_stream;       // stores end of iterator
+        stream_iterator_begin_type start_of_stream;     // stores iterator to start of container
+        stream_iterator_end_type end_of_stream;         // stores end of iterator
 
     public:
         /**
@@ -63,7 +63,7 @@ class BlockStream {
                 **/
                 Block read_block_from_stream(bool is_starting_block = true) noexcept(false) {
                     // read first token, should be either std::nullopt or an opening bracket
-                    const Token &token = next();
+                    Token token = next();
 
                     // handle special case of starting block
                     if(is_starting_block){
@@ -103,7 +103,7 @@ class BlockStream {
                  *  @desc uses passed container to construct iterater, note that what happens will depend on container type
                  *  @param container an iterable container to use for token stream
                 */
-                BlockStreamIterator(stream_iterator_begin_type begin, const stream_iterator_end_type end) : stream(begin), end_of_stream(end) {
+                BlockStreamIterator(stream_iterator_begin_type begin, stream_iterator_end_type end) : stream(std::move(begin)), end_of_stream(std::move(end)) {
                     ++*this; // set cursor to first block
                 }
                 
@@ -114,6 +114,7 @@ class BlockStream {
                 **/
                 BlockStreamIterator& operator ++() noexcept(false) {
                     cursor = read_block_from_stream();
+                    return *this;
                 }
 
                 /**
