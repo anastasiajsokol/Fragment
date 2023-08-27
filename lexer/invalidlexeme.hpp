@@ -4,8 +4,8 @@
  *      @author Anastasia Sokol
 **/
 
-#ifndef LEXER_EXCEPTIONS_H
-#define LEXER_EXCEPTIONS_H
+#ifndef LEXER_INVALIDLEXEME_H
+#define LEXER_INVALIDLEXEME_H
 
 #include "../datatype/token.hpp"    // defines Token::TokenPosition which is used to track lexeme position in file
 
