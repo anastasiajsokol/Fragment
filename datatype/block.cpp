@@ -1,5 +1,7 @@
 #include "block.h"
 
+Block::Block(Token::TokenPosition &position) : position(position) {}
+
 Block& Block::append(std::variant<Token, Block> value) {
     view.push_back(value);
     return *this;
