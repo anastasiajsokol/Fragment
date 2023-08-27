@@ -1,6 +1,7 @@
 #include "block.h"
 
 Block::Block(const Token::TokenPosition position) noexcept : position(position) {}
+Block::Block() noexcept {}
 
 Block& Block::append(std::variant<Token, Block> value) {
     view.push_back(value);

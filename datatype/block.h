@@ -25,6 +25,7 @@ struct Block {
     Token::TokenPosition position;              // store position of first token in block (likely a bracket which should not be stored in view)
 
     Block(const Token::TokenPosition) noexcept;
+    Block() noexcept;
 
     /**
      *  @brief append either a token or another block to this blocks internal view
