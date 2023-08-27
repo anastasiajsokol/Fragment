@@ -85,7 +85,7 @@ class BlockStream {
 
                     Block block(token.position);
 
-                    while(!(token.value == ')' && token.type == Token::TokenType::delimiter)){
+                    while(!(token.value == ")" && token.type == Token::TokenType::delimiter)){
                         if(token.type == Token::TokenType::delimiter && token.value == "("){
                             block.append(read_block_from_stream(false));
                         } else {
@@ -140,7 +140,7 @@ class BlockStream {
                  *  @return bool signifing if the end of the stream has been reached 
                 **/
                 inline bool operator ==(const Block& block){
-                    return block.size() == 1 && block.size() == cursor.size() && std::holds_alternative<Token>(block.view.front()) && std::holds_alternative<Token>(cursor.view.front()) && block.view.front().type == Token::TokenType::end_of_file && cursor.view.front().type == Token::TokenType::end_of_file;
+                    return block.size() == 1 && block.size() == cursor.size() && std::holds_alternative<Token>(block.view.front()) && std::holds_alternative<Token>(cursor.view.front()) && std::get<Token>(block.view.front()).type == Token::TokenType::end_of_file && std::get<Token>(cursor.view.front()).type == Token::TokenType::end_of_file;
                 }
 
                 /**
@@ -171,7 +171,7 @@ class BlockStream {
          *  @return returns a block with only one token of type end_of_stream
         **/
         const Block end() const {
-            return Block(token.position).append(Token("End of File", Token::TokenPosition{-1, -1}, Token::TokenType::end_of_file));
+            return Block(Token::TokenPosition{-1, -1}).append(Token("End of File", Token::TokenPosition{-1, -1}, Token::TokenType::end_of_file));
         }
 };
 
