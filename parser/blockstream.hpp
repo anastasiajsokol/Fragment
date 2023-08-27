@@ -10,8 +10,6 @@
 #include "../datatype/block.h"  // defines Block used to represent a collection of tokens in a structured way
 #include "invalidblock.hpp"     // defines exception parser::InvalidBlock for reporting token streams that do not represent valid blocks
 
-#include <stdexcept>            // defines std::runtime_error used for BlockStreamDoubleReadException
-
 namespace parser {
 
 /**
