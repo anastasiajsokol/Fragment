@@ -22,7 +22,7 @@ struct Value {
         static Value bad_operator(const Value&, const Value&) noexcept(false) {
 
         }
-
+        
         static inline value_operator_function* operator_table[NUMBER_OF_OPERATORS][NUMBER_OF_VALUE_TYPES][NUMBER_OF_VALUE_TYPES] = {bad_operator};
 };
 
