@@ -139,7 +139,7 @@ Token LexStream::LexStreamIterator::lexeme_to_token(const std::pair<Token::Token
         return Token(value, position, Token::TokenType::boolean);
     } else if(in_set({"define", "lambda", "if"})) {
         return Token(value, position, Token::TokenType::keyword);
-    } else if(in_set({"+", "-", "*", "/", ">", "<", "=", ">=", "<=", "print"})) {
+    } else if(in_set({"+", "-", "*", "/", ">", "<", "=", ">=", "<="})) {
         return Token(value, position, Token::TokenType::operation);
     } else {
         return Token(value, position, Token::TokenType::reference);
