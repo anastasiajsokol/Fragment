@@ -14,13 +14,13 @@
  *  @brief represents a code expression
 **/
 struct Expression {
-    Token::TokenPosition position;
+    Token::TokenPosition position;  // stores file position of first token in expression
 
     /**
      *  @brief initialize position to value
      *  @desc while the class Expression is not itself constructable derived classes may call the constructor to initialize position 
     **/
-    inline Expression(Token::TokenPosition position) : position(position) {}
+    inline Expression(const Token::TokenPosition &position) : position(position) {}
 
     /**
      *  @brief enforces that all expression subclasses are evaluatable and that operator () can be called without knowing the specific subtype
