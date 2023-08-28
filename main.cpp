@@ -17,7 +17,7 @@
 #include <cstdio>                   // defines std::fprintf, stderr, EXIT_FAILURE, and EXIT_SUCCESS for reporting program execution state
 
 int main(){
-    const char* filepath = "test/example_factorial.fl";
+    const char* filepath = "examples/factorial.fl";
 
     try {
         for(const Block& block : parser::BlockStream(lexer::LexStream(filepath))){
