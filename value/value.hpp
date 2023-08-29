@@ -136,4 +136,18 @@ struct Value {
     virtual operator bool();
 };
 
+// allow for operations on Value::value_t as if simply of type Value
+
+inline Value::value_t operator +(const Value::value_t& a, const Value::value_t& b){ return *a + b; }
+inline Value::value_t operator -(const Value::value_t& a, const Value::value_t& b){ return *a - b; }
+inline Value::value_t operator *(const Value::value_t& a, const Value::value_t& b){ return *a * b; }
+inline Value::value_t operator /(const Value::value_t& a, const Value::value_t& b){ return *a / b; }
+inline Value::value_t operator >(const Value::value_t& a, const Value::value_t& b){ return *a > b; }
+inline Value::value_t operator <(const Value::value_t& a, const Value::value_t& b){ return *a < b; }
+inline Value::value_t operator >=(const Value::value_t& a, const Value::value_t& b){ return *a >= b; }
+inline Value::value_t operator <=(const Value::value_t& a, const Value::value_t& b){ return *a <= b; }
+inline Value::value_t operator &(const Value::value_t& a, const Value::value_t& b){ return *a & b; }
+inline Value::value_t operator |(const Value::value_t& a, const Value::value_t& b){ return *a | b; }
+inline Value::value_t operator !(const Value::value_t& a){ return !(*a); }
+
 #endif
