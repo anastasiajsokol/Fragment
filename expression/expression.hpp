@@ -7,8 +7,8 @@
 #ifndef DATATYPE_EXPRESSION_H
 #define DATATYPE_EXPRESSION_H
 
-#include "value.h"      // defines Value which is used to represent a loosely typed value of any of Fragment Lisp's base value types
-#include "token.hpp"    // defines Token::TokenPosition used to represent starting position of expression in the file
+#include "../value/value.hpp"       // defines Value which is used to represent a loosely typed value of any of Fragment Lisp's base value types
+#include "../datatype/token.hpp"    // defines Token::TokenPosition used to represent starting position of expression in the file
 
 /**
  *  @brief represents a code expression
