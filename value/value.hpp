@@ -129,12 +129,12 @@ struct Value {
     /**
      *  @brief convert to string
     **/
-    virtual operator std::string();
+    virtual operator std::string() const;
 
     /**
      *  @brief convert to boolean 
     **/
-    virtual operator bool();
+    virtual operator bool() const;
 };
 
 // allow for operations on Value::value_t as if simply of type Value

@@ -20,8 +20,8 @@ struct StringValue : public Value {
     value_t operator |(const value_t&) const noexcept(false);
     value_t operator !() const noexcept(false);
 
-    operator std::string();
-    operator bool();
+    operator std::string() const;
+    operator bool() const;
 };
 
 #endif
