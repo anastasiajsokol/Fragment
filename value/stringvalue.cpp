@@ -26,7 +26,7 @@ value_t StringValue::operator +(const value_t& other) const noexcept(false){
             }));
     }
 
-    throw NotImplemented("Unable to non-type to string");
+    throw NotImplemented("Unable to add non-type to string");
 }
 
 value_t StringValue::operator -(const value_t& other) const noexcept(false){
