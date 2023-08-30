@@ -13,6 +13,7 @@
 #include <list>         // defines std::list used to hold a collection of values
 #include <variant>      // defines std::varient a type checked version of a union
 #include <memory>       // defines std::shared_ptr used to automatically manage lifetime of values
+#include <string>       // defines std::string, needed because std::string must be a complete type to be used in std::variant
 
 /**
  *  @brief base class for weakly typed value implimention
@@ -35,7 +36,7 @@ struct Value {
      *  @brief extend to initialize value with string
      *  @param value to initialize value to
     **/
-    Value(const std::string &value);
+    Value(std::string value);
 
     /**
      *  @brief extend to initialize value with boolean

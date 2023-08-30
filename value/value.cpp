@@ -3,7 +3,7 @@
 #include "notimplemented.hpp"   // defines NotImplemented exception, used heavily
 
 Value::Value(const double value) : value(value) {}
-Value::Value(const std::string &value) : value(value) {}
+Value::Value(std::string value) : value(value) {}
 Value::Value(const bool value) : value(value) {}
 Value::Value(const std::function<value_t(std::list<value_t>)> &value) : value(value) {}
 
