@@ -101,6 +101,90 @@ value_t BooleanValue::operator /(const value_t& other) const noexcept(false) {
     throw NotImplemented("Unable to divide a non-type from a boolean");
 }
 
+value_t BooleanValue::operator <(const value_t& other) const noexcept(false) {
+    switch(other->type){
+        case ValueType::numeric:
+            return value_t(new BooleanValue((bool)*this < std::get<double>(other->value)));
+        
+        case ValueType::string:
+            throw NotImplemented("Comparison of a boolean by a string is not allowed");
+        
+        case ValueType::boolean:
+            return value_t(new BooleanValue((bool)*this < (bool)*other));
+        
+        case ValueType::function:
+            // create new function that is the result of the current value of this times the result of the given function
+            return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
+                return *this < std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+            }));
+    }
+
+    throw NotImplemented("Unable to compare a non-type and a boolean");
+}
+
+value_t BooleanValue::operator >(const value_t& other) const noexcept(false) {
+    switch(other->type){
+        case ValueType::numeric:
+            return value_t(new BooleanValue((bool)*this > std::get<double>(other->value)));
+        
+        case ValueType::string:
+            throw NotImplemented("Comparison of a boolean by a string is not allowed");
+        
+        case ValueType::boolean:
+            return value_t(new BooleanValue((bool)*this > (bool)*other));
+        
+        case ValueType::function:
+            // create new function that is the result of the current value of this times the result of the given function
+            return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
+                return *this > std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+            }));
+    }
+
+    throw NotImplemented("Unable to compare a non-type and a boolean");
+}
+
+value_t BooleanValue::operator <=(const value_t& other) const noexcept(false) {
+    switch(other->type){
+        case ValueType::numeric:
+            return value_t(new BooleanValue((bool)*this <= std::get<double>(other->value)));
+        
+        case ValueType::string:
+            throw NotImplemented("Comparison of a boolean by a string is not allowed");
+        
+        case ValueType::boolean:
+            return value_t(new BooleanValue((bool)*this <= (bool)*other));
+        
+        case ValueType::function:
+            // create new function that is the result of the current value of this times the result of the given function
+            return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
+                return *this <= std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+            }));
+    }
+
+    throw NotImplemented("Unable to compare a non-type and a boolean");
+}
+
+value_t BooleanValue::operator >=(const value_t& other) const noexcept(false) {
+    switch(other->type){
+        case ValueType::numeric:
+            return value_t(new BooleanValue((bool)*this >= std::get<double>(other->value)));
+        
+        case ValueType::string:
+            throw NotImplemented("Comparison of a boolean by a string is not allowed");
+        
+        case ValueType::boolean:
+            return value_t(new BooleanValue((bool)*this >= (bool)*other));
+        
+        case ValueType::function:
+            // create new function that is the result of the current value of this times the result of the given function
+            return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
+                return *this >= std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+            }));
+    }
+
+    throw NotImplemented("Unable to compare a non-type and a boolean");
+}
+
 value_t BooleanValue::operator &&(const value_t& other) const noexcept(false) {
     if(other->type == ValueType::function){
         // create new function that is the result of the current value of this and the result of the given function
