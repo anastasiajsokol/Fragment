@@ -41,6 +41,38 @@ value_t StringValue::operator /(const value_t& other) const noexcept(false){
     throw NotImplemented("Dividing a string by a value is not defined");
 }
 
+value_t StringValue::operator <(const value_t& other) const noexcept(false) {
+    if(other->type != ValueType::string){
+        throw NotImplemented("Can only compare strings to other strings");
+    }
+
+    return value_t(new BooleanValue((std::string)*this < (std::string)*other));
+}
+
+value_t StringValue::operator >(const value_t& other) const noexcept(false) {
+    if(other->type != ValueType::string){
+        throw NotImplemented("Can only compare strings to other strings");
+    }
+
+    return value_t(new BooleanValue((std::string)*this > (std::string)*other));
+}
+
+value_t StringValue::operator <=(const value_t& other) const noexcept(false) {
+    if(other->type != ValueType::string){
+        throw NotImplemented("Can only compare strings to other strings");
+    }
+
+    return value_t(new BooleanValue((std::string)*this <= (std::string)*other));
+}
+
+value_t StringValue::operator >=(const value_t& other) const noexcept(false) {
+    if(other->type != ValueType::string){
+        throw NotImplemented("Can only compare strings to other strings");
+    }
+
+    return value_t(new BooleanValue((std::string)*this >= (std::string)*other));
+}
+
 value_t StringValue::operator &&(const value_t& other) const noexcept(false) {
     if(other->type == ValueType::function){
         // if function delay as always
