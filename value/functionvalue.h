@@ -16,8 +16,8 @@ struct FunctionValue : public Value {
     value_t operator >=(const value_t&) const noexcept(false);
     value_t operator <=(const value_t&) const noexcept(false);
 
-    value_t operator &(const value_t&) const noexcept(false);
-    value_t operator |(const value_t&) const noexcept(false);
+    value_t operator &&(const value_t&) const noexcept(false);
+    value_t operator ||(const value_t&) const noexcept(false);
     value_t operator !() const noexcept(false);
 
     operator std::string() const;

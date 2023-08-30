@@ -111,14 +111,14 @@ struct Value {
      *  @param other other value to be or'ed
      *  @return result of this or other
     **/
-    virtual value_t operator |(const value_t&) const noexcept(false);
+    virtual value_t operator &&(const value_t&) const noexcept(false);
 
     /**
      *  @brief this boolean and other
      *  @param other other value to be and'ed
      *  @return result of this or other
     **/
-    virtual value_t operator &(const value_t&) const noexcept(false);
+    virtual value_t operator ||(const value_t&) const noexcept(false);
 
     /**
      *  @brief boolean not this
@@ -147,8 +147,8 @@ inline Value::value_t operator >(const Value::value_t& a, const Value::value_t& 
 inline Value::value_t operator <(const Value::value_t& a, const Value::value_t& b){ return *a < b; }
 inline Value::value_t operator >=(const Value::value_t& a, const Value::value_t& b){ return *a >= b; }
 inline Value::value_t operator <=(const Value::value_t& a, const Value::value_t& b){ return *a <= b; }
-inline Value::value_t operator &(const Value::value_t& a, const Value::value_t& b){ return *a & b; }
-inline Value::value_t operator |(const Value::value_t& a, const Value::value_t& b){ return *a | b; }
+inline Value::value_t operator &&(const Value::value_t& a, const Value::value_t& b){ return *a && b; }
+inline Value::value_t operator ||(const Value::value_t& a, const Value::value_t& b){ return *a || b; }
 inline Value::value_t operator !(const Value::value_t& a){ return !(*a); }
 
 #endif
