@@ -55,70 +55,70 @@ struct Value {
      *  @param other value to be added
      *  @return a new value representing this + other
     **/
-    virtual value_t operator +(const value_t& other) const noexcept(false);
+    virtual value_t operator +(const value_t&) const noexcept(false);
 
     /**
      *  @brief subtract other to value
      *  @param other value to be subtracted
      *  @return a new value representing this - other
     **/
-    virtual value_t operator -(const value_t& other) const noexcept(false);
+    virtual value_t operator -(const value_t&) const noexcept(false);
 
     /**
      *  @brief multiply other to value
      *  @param other value to be multiplied
      *  @return a new value representing this * other
     **/
-    virtual value_t operator *(const value_t& other) const noexcept(false);
+    virtual value_t operator *(const value_t&) const noexcept(false);
 
     /**
      *  @brief divide value by other
      *  @param other value to be divided
      *  @return a new value representing this / other
     **/
-    virtual value_t operator /(const value_t& other) const noexcept(false);
+    virtual value_t operator /(const value_t&) const noexcept(false);
 
     /**
      *  @brief compare this to other
      *  @param other value to be compared
      *  @return result of comparing this to other
     **/
-    virtual value_t operator <(const value_t& other) const noexcept(false);
+    virtual value_t operator <(const value_t&) const noexcept(false);
 
     /**
      *  @brief compare this to other
      *  @param other value to be compared
      *  @return result of comparing this to other
     **/
-    virtual value_t operator >(const value_t& other) const noexcept(false);
+    virtual value_t operator >(const value_t&) const noexcept(false);
 
     /**
      *  @brief compare this to other
      *  @param other value to be compared
      *  @return result of comparing this to other
     **/
-    virtual value_t operator <=(const value_t& other) const noexcept(false);
+    virtual value_t operator <=(const value_t&) const noexcept(false);
 
     /**
      *  @brief compare this to other
      *  @param other value to be compared
      *  @return result of comparing this to other
     **/
-    virtual value_t operator >=(const value_t& other) const noexcept(false);
+    virtual value_t operator >=(const value_t&) const noexcept(false);
 
     /**
      *  @brief this boolean or other
      *  @param other other value to be or'ed
      *  @return result of this or other
     **/
-    virtual value_t operator |(const value_t& other) const noexcept(false);
+    virtual value_t operator |(const value_t&) const noexcept(false);
 
     /**
      *  @brief this boolean and other
      *  @param other other value to be and'ed
      *  @return result of this or other
     **/
-    virtual value_t operator &(const value_t& other) const noexcept(false);
+    virtual value_t operator &(const value_t&) const noexcept(false);
 
     /**
      *  @brief boolean not this
