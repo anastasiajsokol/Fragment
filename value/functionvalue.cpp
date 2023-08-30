@@ -91,6 +91,54 @@ value_t FunctionValue::operator /(const value_t& other) const noexcept(false){
     throw NotImplemented("Unable to divide function value by non-type");
 }
 
+value_t FunctionValue::operator <(const value_t& other) const noexcept(false) {
+    if(other->type == ValueType::function){
+        return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
+            return std::get<std::function<value_t(std::list<value_t>)>>(this->value)(arguments) < std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+        }));
+    } else {
+        return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
+            return std::get<std::function<value_t(std::list<value_t>)>>(this->value)(arguments) < other;
+        }));
+    }
+}
+
+value_t FunctionValue::operator >(const value_t& other) const noexcept(false) {
+    if(other->type == ValueType::function){
+        return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
+            return std::get<std::function<value_t(std::list<value_t>)>>(this->value)(arguments) > std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+        }));
+    } else {
+        return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
+            return std::get<std::function<value_t(std::list<value_t>)>>(this->value)(arguments) > other;
+        }));
+    }
+}
+
+value_t FunctionValue::operator <=(const value_t& other) const noexcept(false) {
+    if(other->type == ValueType::function){
+        return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
+            return std::get<std::function<value_t(std::list<value_t>)>>(this->value)(arguments) <= std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+        }));
+    } else {
+        return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
+            return std::get<std::function<value_t(std::list<value_t>)>>(this->value)(arguments) <= other;
+        }));
+    }
+}
+
+value_t FunctionValue::operator >=(const value_t& other) const noexcept(false) {
+    if(other->type == ValueType::function){
+        return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
+            return std::get<std::function<value_t(std::list<value_t>)>>(this->value)(arguments) >= std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+        }));
+    } else {
+        return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
+            return std::get<std::function<value_t(std::list<value_t>)>>(this->value)(arguments) >= other;
+        }));
+    }
+}
+
 value_t FunctionValue::operator &&(const value_t& other) const noexcept(false){
     switch(other->type){
         case ValueType::numeric:
