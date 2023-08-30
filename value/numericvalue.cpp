@@ -28,7 +28,7 @@ value_t NumericValue::operator +(const value_t& other) const noexcept(false){
         case ValueType::function:
             // create new function that is the result of the current value of this plus the result of the given function
             return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
-                *this + std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+                return *this + std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
             }));
     }
 
@@ -52,7 +52,7 @@ value_t NumericValue::operator -(const value_t& other) const noexcept(false) {
         case ValueType::function:
             // create new function that is the result of the current value of this minus the result of the given function
             return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
-                *this - std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+                return *this - std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
             }));
     }
 
@@ -94,7 +94,7 @@ value_t NumericValue::operator *(const value_t& other) const noexcept(false) {
         case ValueType::function:
             // create new function that is the result of the current value of this multiplied by the result of the given function
             return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
-                *this * std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+                return *this * std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
             }));
     }
 
@@ -118,7 +118,7 @@ value_t NumericValue::operator /(const value_t& other) const noexcept(false){
         case ValueType::function:
             // create new function that is the result of the current value of this divided by the result of the given function
             return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
-                *this / std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+                return *this / std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
             }));
     }
 
@@ -142,7 +142,7 @@ value_t NumericValue::operator >(const value_t& other) const noexcept(false) {
         case ValueType::function:
             // create new function that checks if result is less than current value
             return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
-                *this > std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+                return *this > std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
             }));
     }
 
@@ -166,7 +166,7 @@ value_t NumericValue::operator <(const value_t& other) const noexcept(false) {
         case ValueType::function:
             // create new function that checks if result is less than current value
             return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
-                *this < std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+                return *this < std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
             }));
     }
 
@@ -190,7 +190,7 @@ value_t NumericValue::operator >=(const value_t& other) const noexcept(false) {
         case ValueType::function:
             // create new function that checks if result is less than current value
             return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
-                *this >= std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+                return *this >= std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
             }));
     }
 
@@ -214,7 +214,7 @@ value_t NumericValue::operator <=(const value_t& other) const noexcept(false) {
         case ValueType::function:
             // create new function that checks if result is less than current value
             return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
-                *this <= std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+                return *this <= std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
             }));
     }
 
@@ -225,7 +225,7 @@ value_t NumericValue::operator &&(const value_t& other) const noexcept(false) {
     if(other->type == ValueType::function){
         // if function delay as always
         return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
-            *this && std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+            return *this && std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
         }));
     } else {
         // otherwise cast to booleans then do normal and
@@ -237,7 +237,7 @@ value_t NumericValue::operator ||(const value_t& other) const noexcept(false) {
     if(other->type == ValueType::function){
         // if function delay as always
         return value_t(new FunctionValue([*this, other /* captures both by value */](std::list<value_t> arguments) -> value_t {
-            *this || std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
+            return *this || std::get<std::function<value_t(std::list<value_t>)>>(other->value)(arguments);
         }));
     } else {
         // otherwise cast to booleans then do normal or
