@@ -33,11 +33,11 @@ value_t StringValue::operator -(const value_t& other) const noexcept(false){
     throw NotImplemented("Subtracting a value from a string is not defined");
 }
 
-value_t StringValue::operator -(const value_t& other) const noexcept(false){
+value_t StringValue::operator *(const value_t& other) const noexcept(false){
     throw NotImplemented("Multiplying a string by a value is not defined");
 }
 
-value_t StringValue::operator -(const value_t& other) const noexcept(false){
+value_t StringValue::operator /(const value_t& other) const noexcept(false){
     throw NotImplemented("Dividing a string by a value is not defined");
 }
 
