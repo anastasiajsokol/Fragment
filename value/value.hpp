@@ -36,7 +36,7 @@ struct Value {
      *  @brief extend to initialize value with string
      *  @param value to initialize value to
     **/
-    Value(std::string value);
+    Value(const std::string &value);
 
     /**
      *  @brief extend to initialize value with boolean
