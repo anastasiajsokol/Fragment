@@ -1,9 +1,11 @@
-#ifndef VALUE_NUMERIC_H
-#define VALUE_NUMERIC_H
+#ifndef VALUE_STRINGVALUE_H
+#define VALUE_STRINGVALUE_H
 
 #include "value.hpp"
 
-struct Numeric : public Value {
+struct StringValue : public Value {
+    StringValue(const std::string &value);
+
     value_t operator +(const value_t&) const noexcept(false);
     value_t operator -(const value_t&) const noexcept(false);
     value_t operator *(const value_t&) const noexcept(false);
