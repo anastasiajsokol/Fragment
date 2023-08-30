@@ -23,7 +23,7 @@ value_t NumericValue::operator +(const value_t& other) const noexcept(false){
         
         case ValueType::boolean:
             // 1 bit modular arithmetic is the same as xor
-            return value_t(new BooleanValue((bool)*this ^ std::get<bool>(other->value)));
+            return value_t(new BooleanValue((bool)*this ^ (bool)*other));
         
         case ValueType::function:
             // create new function that is the result of the current value of this plus the result of the given function
@@ -47,7 +47,7 @@ value_t NumericValue::operator -(const value_t& other) const noexcept(false) {
         
         case ValueType::boolean:
             // 1 bit modular subtraction
-            return value_t(new BooleanValue(std::get<bool>(other->value) ? !(bool)*this : (bool)*this));
+            return value_t(new BooleanValue((bool)*other ? !(bool)*this : (bool)*this));
         
         case ValueType::function:
             // create new function that is the result of the current value of this minus the result of the given function
@@ -89,7 +89,7 @@ value_t NumericValue::operator *(const value_t& other) const noexcept(false) {
 
         case ValueType::boolean:
             // boolean multiplication is the same as the 'and' operation
-            return value_t(new BooleanValue((bool)*this && std::get<bool>(other->value)));
+            return value_t(new BooleanValue((bool)*this && (bool)*other));
         
         case ValueType::function:
             // create new function that is the result of the current value of this multiplied by the result of the given function
@@ -137,7 +137,7 @@ value_t NumericValue::operator >(const value_t& other) const noexcept(false) {
         
         case ValueType::boolean:
             // check if resulting booleans are the same
-            return value_t(new BooleanValue((bool)*this > std::get<bool>(other->value)));
+            return value_t(new BooleanValue((bool)*this > (bool)*this));
         
         case ValueType::function:
             // create new function that checks if result is less than current value
@@ -161,7 +161,7 @@ value_t NumericValue::operator <(const value_t& other) const noexcept(false) {
         
         case ValueType::boolean:
             // check if resulting booleans are the same
-            return value_t(new BooleanValue((bool)*this < std::get<bool>(other->value)));
+            return value_t(new BooleanValue((bool)*this < (bool)*other));
         
         case ValueType::function:
             // create new function that checks if result is less than current value
@@ -185,7 +185,7 @@ value_t NumericValue::operator >=(const value_t& other) const noexcept(false) {
         
         case ValueType::boolean:
             // check if resulting booleans are the same
-            return value_t(new BooleanValue((bool)*this >= std::get<bool>(other->value)));
+            return value_t(new BooleanValue((bool)*this >= (bool)*other));
         
         case ValueType::function:
             // create new function that checks if result is less than current value
@@ -209,7 +209,7 @@ value_t NumericValue::operator <=(const value_t& other) const noexcept(false) {
         
         case ValueType::boolean:
             // check if resulting booleans are the same
-            return value_t(new BooleanValue((bool)*this <= std::get<bool>(other->value)));
+            return value_t(new BooleanValue((bool)*this <= (bool)*other));
         
         case ValueType::function:
             // create new function that checks if result is less than current value
