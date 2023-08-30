@@ -19,7 +19,7 @@ value_t NumericValue::operator +(const value_t& other) const noexcept(false){
         
         case ValueType::string:
             // convert this to string first, then add as strings
-            return value_t(new StringValue((std::string)*this + std::get<std::string>(other->value)));
+            return value_t(new StringValue((std::string)*this + (std::string)*other));
         
         case ValueType::boolean:
             // 1 bit modular arithmetic is the same as xor
