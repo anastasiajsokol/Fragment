@@ -41,14 +41,15 @@ struct ProgramState {
          *  @param value value_t representing the value stored by reference
          *  @return value_t just set
         **/
-        Value::value_t set(std::string, Value::value_t);
+        Value::value_t set(const std::string&, Value::value_t);
         
         /**
          *  @brief get value stored by reference starting at current scope going down
          *  @param name string representing name of reference
          *  @return value_t refered to by given string
+         *  @throw InvalidState if reference not found
         **/
-        Value::value_t get(std::string);
+        Value::value_t get(const std::string&) const noexcept(false);
 };
 
 #endif
