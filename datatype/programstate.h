@@ -7,10 +7,10 @@
 #ifndef DATATYPE_PROGRAMSTATE_H
 #define DATATYPE_PROGRAMSTATE_H
 
-#include "../expression/expression.hpp"   // defines Expression::expression_t which is the type references are mapped to
+#include "../expression/expression.hpp"     // defines Expression::expression_t which is the type references are mapped to
 
-#include <unordered_map>        // defines std::unordered_map used to make reference lookups
-#include <vector>               // defines std::vector used to manage scope
+#include <unordered_map>                    // defines std::unordered_map used to make reference lookups
+#include <vector>                           // defines std::vector used to manage scope
 
 /**
  *  @brief used to manage state to otherwise stateless expressions
@@ -36,18 +36,18 @@ struct ProgramState {
         void pop();
 
         /**
-         *  @brief set reference to value in *top scope*
+         *  @brief set reference to expression in *top scope*
          *  @param name string representing name of reference
-         *  @param value value_t representing the value stored by reference
+         *  @param value expression_t representing the expression stored by reference
         **/
-        void set(std::string, Value::value_t);
+        void set(std::string, Expression::expression_t);
 
         /**
-         *  @brief get value stored by reference starting at current scope going down
+         *  @brief get expression stored by reference starting at current scope going down
          *  @param name string representing name of reference
-         *  @return value_t refered to by given string
+         *  @return expression_t refered to by given string
         **/
-        Value::value_t get(std::string);
+        Expression::expression_t get(std::string);
 };
 
 #endif
