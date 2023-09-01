@@ -7,7 +7,7 @@
 #ifndef DATATYPE_PROGRAMSTATE_H
 #define DATATYPE_PROGRAMSTATE_H
 
-#include "../value/value.hpp"   // defines Value::value_t which is the type references are mapped to
+#include "../expression/expression.hpp"   // defines Expression::expression_t which is the type references are mapped to
 
 #include <unordered_map>        // defines std::unordered_map used to make reference lookups
 #include <vector>               // defines std::vector used to manage scope
@@ -17,7 +17,7 @@
 **/
 struct ProgramState {
     private:
-        std::vector<std::unordered_map<std::string, Value::value_t>> scope; // stores references in a way that can be managed by scope
+        std::vector<std::unordered_map<std::string, Expression::expression_t>> scope; // stores references in a way that can be managed by scope
 
     public:
         /**
