@@ -12,6 +12,9 @@
 #include "parser/blockstream.hpp"       // defines parser::BlockStream for creating block streams from token streams
 #include "parser/invalidblock.hpp"      // defines parser::InvalidBlock for reporting generic block parsing errors
 #include "parser/expressionstream.hpp"  // defines parser::ExpressionStream for turning creating an expression stream from block streams
+#include "datatype/invalidstate.hpp"    // defines InvalidState exception
+#include "utility/standardlibrary.h"    // defines interface for standard library functions
+#include "value/functionvalue.h"        // define FunctionValue for wrapping standard library functions
 
 #include <ios>                      // defines std::ios_base::failure for file io errors (also defined in lexer/lexstream.hpp but that is not generally guaranteed)
 
@@ -37,13 +40,14 @@ int main(int argc, char **argv){
     const char* filepath = argv[1];
 
     try {
-        // build and run program
+        // setup program state
         ProgramState state;
 
+        state.set("print", Value::value_t(new FunctionValue(flstd::print)));
+
+        // build and run program
         for(const auto& expression : parser::ExpressionStream(parser::BlockStream(lexer::LexStream(filepath)))){
-            std::printf("Expression position: (%ld, %ld)\n", expression->position.line, expression->position.index);
             (*expression)(state);
-            std::puts("DONE.");
         }
     } catch(std::ios_base::failure error){
         std::fprintf(stderr, "File Error\n\t%s\n", error.what());
@@ -54,6 +58,10 @@ int main(int argc, char **argv){
     } catch(parser::InvalidBlock error) {
         std::fprintf(stderr, "Invalid Block Exception\n\terror: %s\n\tposition: (%ld, %ld) in file %s\n", error.what(), error.position.line, error.position.index, filepath);
         return EXIT_FAILURE;
+    } catch(InvalidState error){
+        std::fprintf(stderr, "Invalid Program State\n\terror: %s\n\tposition: file %s\n", error.what(), filepath);
+    } catch(InvalidExpression error){
+        std::fprintf(stderr, "Invalid Expression\n\terror: %s\n\tposition: (%ld, %ld) in file %s\n", error.what(), error.position.line, error.position.index, filepath);
     }
 
     return EXIT_SUCCESS;
