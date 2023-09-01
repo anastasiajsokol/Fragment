@@ -17,7 +17,7 @@ struct FunctionValue : public Value {
      *  @brief construct a value object from a callable type
      *  @param value any callable type
     **/
-    FunctionValue(std::function<Value::value_t(std::list<Value::value_t>)> value);
+    FunctionValue(std::function<Value::value_t(std::list<Value::value_t>)>);
 
     /**
      *  @brief add a value of generic type to this 
