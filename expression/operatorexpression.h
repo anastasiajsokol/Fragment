@@ -9,8 +9,14 @@
 
 #include "expression.hpp"   // defines Expression base class
 
+/**
+ *  @brief represents an expression with an operator and some arguments 
+**/
 struct OperatorExpression : public Expression {
     public:
+        /**
+         *  @brief represents the different types of operators 
+        **/
         enum class OperatorType {
             operator_add,
             operator_subtract,
@@ -24,7 +30,7 @@ struct OperatorExpression : public Expression {
             operator_or,
             operator_not
         };
-
+        
         /**
          *  @brief create an operator expression
          *  @param position of first token in expression
