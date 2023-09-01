@@ -5,7 +5,7 @@ AtomicExpression::AtomicExpression(const Token::TokenPosition &position, std::st
 
 Value::value_t AtomicExpression::operator ()(ProgramState& state) const {
     if(reference){
-        return (*state.get(std::get<std::string>(value)))(state);
+        return state.get(std::get<std::string>(value));
     }
     return std::get<Value::value_t>(value);
 }
