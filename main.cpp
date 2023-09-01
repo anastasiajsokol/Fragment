@@ -7,10 +7,11 @@
  *      <a href="https://github.com/anastasiajsokol/FragmentLisp">Github Repository</a> 
 **/
 
-#include "lexer/invalidlexeme.hpp"  // defines lexer::InvalidLexeme for reporting generic lexing errors
-#include "lexer/lexstream.hpp"      // defines lexer::LexStream for creating token streams from file path
-#include "parser/blockstream.hpp"   // defines parser::BlockStream for creating block streams from token streams
-#include "parser/invalidblock.hpp"  // defines parser::InvalidBlock for reporting generic block parsing errors
+#include "lexer/invalidlexeme.hpp"      // defines lexer::InvalidLexeme for reporting generic lexing errors
+#include "lexer/lexstream.hpp"          // defines lexer::LexStream for creating token streams from file path
+#include "parser/blockstream.hpp"       // defines parser::BlockStream for creating block streams from token streams
+#include "parser/invalidblock.hpp"      // defines parser::InvalidBlock for reporting generic block parsing errors
+#include "parser/expressionstream.hpp"  // defines parser::ExpressionStream for turning creating an expression stream from block streams
 
 #include <ios>                      // defines std::ios_base::failure for file io errors (also defined in lexer/lexstream.hpp but that is not generally guaranteed)
 
@@ -20,8 +21,8 @@ int main(){
     const char* filepath = "examples/factorial.fl";
 
     try {
-        for(const Block& block : parser::BlockStream(lexer::LexStream(filepath))){
-            std::printf("Block with size: %ld\n", block.size());
+        for(const auto& expression : parser::ExpressionStream(parser::BlockStream(lexer::LexStream(filepath)))){
+            std::printf("Expression of at: (%ld, %ld)\n", expression->position.line, expression->position.index);
         }
     } catch(std::ios_base::failure error){
         std::fprintf(stderr, "File Error\n\t%s\n", error.what());
