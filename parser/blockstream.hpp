@@ -101,6 +101,12 @@ class BlockStream {
                 }
 
             public:
+                using iterator_category = std::input_iterator_tag;
+                using difference_type   = void;
+                using value_type        = Block;
+                using pointer           = value_type*;
+                using reference         = value_type&;
+                
                 /**
                  *  @brief create iterator from streams
                  *  @desc moves iterators and loads first block
@@ -144,7 +150,7 @@ class BlockStream {
                  *  @param block the value to check if end_of_file token
                  *  @return bool signifing if the end of the stream has been reached 
                 **/
-                inline bool operator ==(const Block& block){
+                inline bool operator ==(const Block& block) const {
                     return block.size() == 1 && block.size() == cursor.size() && std::holds_alternative<Token>(block.view.front()) && std::holds_alternative<Token>(cursor.view.front()) && std::get<Token>(block.view.front()).type == Token::TokenType::end_of_file && std::get<Token>(cursor.view.front()).type == Token::TokenType::end_of_file;
                 }
 
@@ -152,7 +158,7 @@ class BlockStream {
                  *  @brief not operator ==
                  *  @return bool representing the negation of operator ==
                 **/
-                inline bool operator !=(const Block& block){
+                inline bool operator !=(const Block& block) const {
                     return !(*this == block);
                 }
         };
