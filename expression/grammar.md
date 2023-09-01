@@ -10,3 +10,5 @@ Expression Types
     operator_expression := (operator expression*)
     
     function_expression := (expression expression expression*)
+
+    self_expression := (expression)
