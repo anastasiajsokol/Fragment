@@ -6,7 +6,7 @@ g++ -std=c++17 main.cpp lexer/*.cpp datatype/*.cpp value/*.cpp expression/*.cpp 
 
 set +e
 
-./fragment
+./fragment $1
 result=$?
 rm fragment
 exit $result
