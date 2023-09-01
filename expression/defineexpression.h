@@ -16,7 +16,7 @@ struct DefineExpression : public Expression {
         Value::value_t operator ()(ProgramState&) const;
     
     private:
-        const std::string &name;
+        const std::string name;
         expression_t value;
 };
 
