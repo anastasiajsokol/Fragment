@@ -1,5 +1,5 @@
 [x] comment all of the value subdirectory
-[] write out all of the expression types
+[x] write out all of the expression types
 [] write expression stream class
 [] write evaluation engine that consumes expression stream
 [] write cli interface
