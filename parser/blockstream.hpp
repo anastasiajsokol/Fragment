@@ -102,9 +102,10 @@ class BlockStream {
 
             public:
                 /**
-                 *  @brief create iterator from container
-                 *  @desc uses passed container to construct iterater, note that what happens will depend on container type
-                 *  @param container an iterable container to use for token stream
+                 *  @brief create iterator from streams
+                 *  @desc moves iterators and loads first block
+                 *  @param begin - ing of stream
+                 *  @param end of stream
                 */
                 BlockStreamIterator(stream_iterator_begin_type begin, stream_iterator_end_type end) : stream(std::move(begin)), end_of_stream(std::move(end)) {
                     ++*this; // set cursor to first block
