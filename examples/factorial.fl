@@ -1,8 +1,8 @@
 (define factorial (lambda (n)
-    (if (= n 0)
+    (if (<= n 1)
         (1)
         (* n (factorial (- n 1)))
     )
 ))
-
-(print "factorial(" value ") = " (factorial 8))
+(define value 8)
+(print value "! = " (factorial value))

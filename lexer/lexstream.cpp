@@ -129,8 +129,9 @@ Token LexStream::LexStreamIterator::lexeme_to_token(const std::pair<Token::Token
 
         return Token(value.substr(1, value.length() - 2), position, Token::TokenType::stringliteral);
     } else if(std::isdigit(value[0])) {
-        // valid numeric tokens must be all numeric
-        if(std::all_of(value.begin(), value.end(), [](char value) -> bool { return std::isdigit(value); })){
+        // valid numeric tokens must be all numeric with optional decimal point
+        int8_t allowed_decimals = 1;
+        if(std::all_of(value.begin(), value.end(), [&allowed_decimals](char value) -> bool { return std::isdigit(value) || (value == '.' && !--allowed_decimals); })){
             return Token(value, position, Token::TokenType::numeric);
         }
 

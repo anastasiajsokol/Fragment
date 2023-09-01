@@ -16,9 +16,25 @@
 #include <ios>                      // defines std::ios_base::failure for file io errors (also defined in lexer/lexstream.hpp but that is not generally guaranteed)
 
 #include <cstdio>                   // defines std::fprintf, stderr, EXIT_FAILURE, and EXIT_SUCCESS for reporting program execution state
+#include <cstring>                  // defines std::strcmp
 
-int main(){
-    const char* filepath = "examples/factorial.fl";
+int main(int argc, char **argv){
+    // command interface
+    if(argc != 2){
+        std::puts("The Fragment Interpeter requires exactly one parameters\n\tallowed: -v, --version, -h, --help, or a path to the input file");
+        return EXIT_FAILURE;
+    }
+
+    if(!std::strcmp(argv[1], "-v") || !std::strcmp(argv[1], "--version")){
+        std::puts("Fragment Interpeter v. 1.0");
+        return EXIT_SUCCESS;
+    } else if(!std::strcmp(argv[1], "-h") || !std::strcmp(argv[1], "--help")){
+        std::puts("Fragment Interpeter v. 1.0\n\tallowed parameters: -v, --version, -h, --help, or an input file path\n\tunfortunately no documentation is currently available");
+        return EXIT_SUCCESS;
+    }
+    
+    // interpeter interface
+    const char* filepath = argv[1];
 
     try {
         for(const auto& expression : parser::ExpressionStream(parser::BlockStream(lexer::LexStream(filepath)))){
