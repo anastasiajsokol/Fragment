@@ -39,9 +39,10 @@ struct ProgramState {
          *  @brief set reference to value in *top scope*
          *  @param name string representing name of reference
          *  @param value value_t representing the value stored by reference
+         *  @return value_t just set
         **/
-        void set(std::string, Value::value_t);
-
+        Value::value_t set(std::string, Value::value_t);
+        
         /**
          *  @brief get value stored by reference starting at current scope going down
          *  @param name string representing name of reference
