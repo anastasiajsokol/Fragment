@@ -7,7 +7,7 @@ Expression Types
     lambda_expression := (lambda (reference reference*) expression)
     conditional_expression := (if expression expression expression)
 
-    operator_expression := (operator expression*)
+    operator_expression := (operator expression expression*)
     
     function_expression := (expression expression expression*)
 
