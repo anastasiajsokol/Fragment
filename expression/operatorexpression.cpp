@@ -1,8 +1,6 @@
 #include "operatorexpression.h"
 
-#include "invalidexpression.hpp"
-
-#include <numeric>
+#include "invalidexpression.hpp"    // defines InvalidExpression for reporting errors
 
 OperatorExpression::OperatorExpression(const Token::TokenPosition& position, OperatorType type, std::list<Expression::expression_t> arguments) : Expression(position), type(type), arguments(std::move(arguments)) {
     if(!this->arguments.size()){
@@ -17,10 +15,11 @@ Value::value_t OperatorExpression::operator ()(ProgramState& state) const {
     using value_t = Value::value_t;
 
     if(type == optype::operator_not){
-        // ensured that only one argument
+        // ensured that only one argument, special case
         return !(*arguments.front())(state);
     }
 
+    // similar to std::accumulate, but specialized for this
     const auto accumulate = [&state](auto start, const auto end, auto op) -> value_t {
         value_t base = (**start)(state);
         for(++start; start != end; ++start){
