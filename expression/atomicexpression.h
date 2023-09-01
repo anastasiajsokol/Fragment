@@ -18,14 +18,14 @@ struct AtomicExpression : public Expression {
          *  @param position of first token
          *  @param value to set expression to 
         **/
-        AtomicExpression(const Token::TokenPosition &, Value::value_t);
+        AtomicExpression(const Token::TokenPosition&, Value::value_t);
 
         /**
          *  @brief create abstract atomic expression with reference
          *  @param position of first token
          *  @param reference name to lookup value of when called 
         **/
-        AtomicExpression(const Token::TokenPosition &, std::string);
+        AtomicExpression(const Token::TokenPosition&, std::string);
 
         /**
          *  @brief get the atomic value stored in expression
