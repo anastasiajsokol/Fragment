@@ -4,5 +4,5 @@
         (* n (factorial (- n 1)))
     )
 ))
-
-(print "factorial(" value ") = " (factorial 8))
+(define value 8)
+(print "factorial(" value ") = " (factorial value))
