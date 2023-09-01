@@ -7,17 +7,17 @@
 #ifndef DATATYPE_PROGRAMSTATE_H
 #define DATATYPE_PROGRAMSTATE_H
 
-#include "../expression/expression.hpp"     // defines Expression::expression_t which is the type references are mapped to
+#include "../value/value.hpp"   // defines Value::value_t which is the type references are mapped to
 
-#include <unordered_map>                    // defines std::unordered_map used to make reference lookups
-#include <vector>                           // defines std::vector used to manage scope
+#include <unordered_map>        // defines std::unordered_map used to make reference lookups
+#include <vector>               // defines std::vector used to manage scope
 
 /**
  *  @brief used to manage state to otherwise stateless expressions
 **/
 struct ProgramState {
     private:
-        std::vector<std::unordered_map<std::string, Expression::expression_t>> scope; // stores references in a way that can be managed by scope
+        std::vector<std::unordered_map<std::string, Value::value_t>> scope; // stores references in a way that can be managed by scope
 
     public:
         /**
@@ -36,18 +36,18 @@ struct ProgramState {
         void pop();
 
         /**
-         *  @brief set reference to expression in *top scope*
+         *  @brief set reference to value in *top scope*
          *  @param name string representing name of reference
-         *  @param value expression_t representing the expression stored by reference
+         *  @param value value_t representing the value stored by reference
         **/
-        void set(std::string, Expression::expression_t);
+        void set(std::string, Value::value_t);
 
         /**
-         *  @brief get expression stored by reference starting at current scope going down
+         *  @brief get value stored by reference starting at current scope going down
          *  @param name string representing name of reference
-         *  @return expression_t refered to by given string
+         *  @return value_t refered to by given string
         **/
-        Expression::expression_t get(std::string);
+        Value::value_t get(std::string);
 };
 
 #endif
