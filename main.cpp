@@ -37,8 +37,13 @@ int main(int argc, char **argv){
     const char* filepath = argv[1];
 
     try {
+        // build and run program
+        ProgramState state;
+
         for(const auto& expression : parser::ExpressionStream(parser::BlockStream(lexer::LexStream(filepath)))){
-            std::printf("Expression of at: (%ld, %ld)\n", expression->position.line, expression->position.index);
+            std::printf("Expression position: (%ld, %ld)\n", expression->position.line, expression->position.index);
+            (*expression)(state);
+            std::puts("DONE.");
         }
     } catch(std::ios_base::failure error){
         std::fprintf(stderr, "File Error\n\t%s\n", error.what());
