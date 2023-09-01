@@ -17,7 +17,7 @@
  *  @brief represents a code expression
 **/
 struct Expression {
-    typedef std::unique_ptr<Expression> expression_t;   // allows for calls to overloaded functions in a memory safe way
+    typedef std::shared_ptr<Expression> expression_t;   // allows for calls to overloaded functions in a memory safe way
 
     Token::TokenPosition position;  // stores file position of first token in expression
 
@@ -31,7 +31,7 @@ struct Expression {
      *  @brief enforces that all expression subclasses are evaluatable and that operator () can be called without knowing the specific subtype
      *  @return value representing the value of the expression (note that not all expressions are pure)
     **/
-    virtual Value::value_t operator ()(ProgramState&) = 0;
+    virtual Value::value_t operator ()(ProgramState&) const = 0;
 };
 
 #endif

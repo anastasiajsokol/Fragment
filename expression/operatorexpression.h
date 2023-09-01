@@ -25,13 +25,13 @@ struct OperatorExpression : public Expression {
             operator_not
         };
 
-        OperatorExpression(const Token::TokenPosition&, OperatorType, std::list<Value::value_t>);
+        OperatorExpression(const Token::TokenPosition&, OperatorType, std::list<Expression::expression_t>);
 
-        Value::value_t operator ()(ProgramState&);
+        Value::value_t operator ()(ProgramState&) const;
     
     private:
         OperatorType type;
-        std::list<Value::value_t> arguments;
+        std::list<Expression::expression_t> arguments;
 };
 
 #endif
