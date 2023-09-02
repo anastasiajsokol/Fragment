@@ -5,4 +5,4 @@
     )
 ))
 (define value 8)
-(print value "! = " (factorial value))
+(println value "! = " (factorial value))
