@@ -46,7 +46,10 @@ int main(int argc, char **argv){
 
         state.set("print", Value::value_t(new FunctionValue(flstd::print)));
         state.set("println", Value::value_t(new FunctionValue(flstd::println)));
-
+        state.set("readline", Value::value_t(new FunctionValue(flstd::readline)));
+        state.set("readnumeric", Value::value_t(new FunctionValue(flstd::readnumeric)));
+        state.set("%%", Value::value_t(new FunctionValue(flstd::noop)));
+        
         // build and run program
         for(const auto& expression : parser::ExpressionStream(parser::BlockStream(lexer::LexStream(filepath)))){
             (*expression)(state);
