@@ -53,20 +53,20 @@ int main(int argc, char **argv){
         for(const auto& expression : parser::ExpressionStream(parser::BlockStream(lexer::LexStream(filepath)))){
             (*expression)(state);
         }
-    } catch(std::ios_base::failure error){
+    } catch(std::ios_base::failure &error){
         std::fprintf(stderr, "\033[31mFile Error\033[39m\n\t%s\n", error.what());
         return EXIT_FAILURE;
-    } catch(lexer::InvalidLexeme error) {
+    } catch(lexer::InvalidLexeme &error) {
         std::fprintf(stderr, "\033[31mInvalid Lexeme Exception\033[39m\n\terror: %s\n\tposition: (%ld, %ld) in file %s\n", error.what(), error.position.line, error.position.index, filepath);
         return EXIT_FAILURE;
-    } catch(parser::InvalidBlock error) {
+    } catch(parser::InvalidBlock &error) {
         std::fprintf(stderr, "\033[31mInvalid Block Exception\033[39m\n\terror: %s\n\tposition: (%ld, %ld) in file %s\n", error.what(), error.position.line, error.position.index, filepath);
         return EXIT_FAILURE;
-    } catch(InvalidExpression error){
+    } catch(InvalidExpression &error){
         std::fprintf(stderr, "\033[31mInvalid Expression\033[39m\n\terror: %s\n\tposition: (%ld, %ld) in file %s\n", error.what(), error.position.line, error.position.index, filepath);
-    } catch(InvalidState error){
+    } catch(InvalidState &error){
         std::fprintf(stderr, "\033[31mInvalid Program State\033[39m\n\terror: %s\n\tposition: file %s\n", error.what(), filepath);
-    } catch(NotImplemented error){
+    } catch(NotImplemented &error){
         std::fprintf(stderr, "\033[31mOperation Not Implemented\033[39m\n\terror: %s\n\tposition: file %s\n", error.what(), filepath);
     }
 

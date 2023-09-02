@@ -59,7 +59,8 @@ Value::value_t OperatorExpression::operator ()(ProgramState& state) const {
         
         case optype::operator_or:
             return accumulate(arguments.begin(), arguments.end(), [](auto a, auto b){ return a || b; });
+        
+        default:
+            throw InvalidExpression(position, "Invalid Operator (possibly a parsing error)");
     }
-
-    throw InvalidExpression(position, "Invalid Operator (possibly a parsing error)");
 }

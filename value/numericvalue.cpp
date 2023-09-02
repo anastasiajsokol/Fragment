@@ -80,7 +80,7 @@ value_t NumericValue::operator *(const value_t& other) const noexcept(false) {
                 
                 temporary.reserve(n * std::get<std::string>(other->value).length());
                 
-                for(size_t i = 0; i < n; ++i){
+                for(ssize_t i = 0; i < n; ++i){
                     temporary += std::get<std::string>(other->value);
                 }
 
