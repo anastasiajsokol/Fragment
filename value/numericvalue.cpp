@@ -5,7 +5,11 @@
 #include "functionvalue.h"
 #include "notimplemented.hpp"
 
-#include <functional>
+#include <iomanip>          // std::setprecision
+#include <functional>       // defines std::function
+
+#include <cmath>            // defines std::modf
+
 
 using value_t = Value::value_t;
 
@@ -250,7 +254,14 @@ value_t NumericValue::operator !() const noexcept(false) {
 }
 
 NumericValue::operator std::string() const {
-    return std::to_string(std::get<double>(value));
+    double intg;
+    if(std::modf(std::get<double>(value), &intg) == 0.0){
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(0) << intg;
+        return ss.str();
+    } else {
+        return std::to_string(std::get<double>(value));
+    }
 }
 
 NumericValue::operator bool() const {
