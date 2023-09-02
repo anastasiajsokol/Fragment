@@ -1,4 +1,4 @@
-# Grammar Definition for Fragment Lisp
+# Grammar Definition for Fragment
 
 Expression Types
     atomic := numeric | stringliteral | boolean | reference

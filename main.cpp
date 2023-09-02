@@ -4,7 +4,7 @@
  *      @author Anastasia Sokol
  *      @copyright 2023 Anastasia Sokol | Released under The Unlicense
  * 
- *      <a href="https://github.com/anastasiajsokol/FragmentLisp">Github Repository</a> 
+ *      <a href="https://github.com/anastasiajsokol/Fragment">Github Repository</a> 
 **/
 
 #include "lexer/invalidlexeme.hpp"      // defines lexer::InvalidLexeme for reporting generic lexing errors

@@ -1,6 +1,6 @@
 /**
  *      @file utility/standardlibrary.h
- *      @brief defines the (extremely limited) standard library of fragment lisp
+ *      @brief defines the (extremely limited) standard library of Fragment
  *      @author Anastasia Sokol
 **/
 
