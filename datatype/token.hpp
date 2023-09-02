@@ -30,9 +30,10 @@ struct Token {
         operation,
         reference,
         stringliteral,
-        boolean
+        boolean,
+        comment
     };
-
+    
     /**
      *  @brief represents position inside of a file, used for error reporting messages
     **/

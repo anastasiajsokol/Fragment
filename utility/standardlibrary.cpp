@@ -57,7 +57,3 @@ Value::value_t flstd::readnumeric(std::list<Value::value_t> arguments){
 
     return Value::value_t(new NumericValue(std::stod(line)));
 }
-
-Value::value_t flstd::noop(std::list<Value::value_t>){
-    return Value::value_t(new BooleanValue(false));
-}

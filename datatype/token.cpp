@@ -15,7 +15,8 @@ std::string to_string(const Token::TokenType type){
         "operation",
         "reference",
         "stringliteral",
-        "boolean"
+        "boolean",
+        "comment"
     };
 
     return token_type_string_table[(int)type];

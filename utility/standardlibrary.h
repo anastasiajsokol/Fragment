@@ -38,11 +38,4 @@ Value::value_t readline(std::list<Value::value_t>);
 **/
 Value::value_t readnumeric(std::list<Value::value_t>);
 
-/**
- *  @brief does nothing
- *  @param values can be anything
- *  @return boolean false 
-**/
-Value::value_t noop(std::list<Value::value_t>);
-
 };  // end of namespace flstd

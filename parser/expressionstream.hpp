@@ -224,6 +224,11 @@ class ExpressionStream {
                         throw InvalidExpression(block.position, "Invalid operator (parse error) [" + operation + "]");
                     }
 
+                    if(std::holds_alternative<Token>(block.view.front()) && std::get<Token>(block.view.front()).type == Token::TokenType::comment){
+                        // turn comments into no ops
+                        return exp_t(new AtomicExpression(block.position, Value::value_t(new BooleanValue(false))));
+                    }
+
                     {
                         // the only pattern left is a function expression
 
