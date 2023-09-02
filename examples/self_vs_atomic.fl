@@ -1,0 +1,9 @@
+(define square (lambda (n) (* n n)))
+
+(print "Enter a number: ")
+(define value (readnumeric)) (%% "here readnumeric is a self expression")
+(println value " squared is " (square value))
+
+(print "Enter a number: ")
+(define value readnumeric) (%% here readnumeric is an atomic expression)
+(println value " squared is " (square value))

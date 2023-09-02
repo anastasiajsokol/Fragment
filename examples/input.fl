@@ -1,0 +1,4 @@
+(define square (lambda (n) (* n n)))
+(print "Enter a number: ")
+(define value (readnumeric))
+(println value " squared is " (square value))

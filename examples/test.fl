@@ -1,3 +1,0 @@
-(define square (lambda (x) (* x x)))
-(define square_plus_3 (+ 3 square))
-(println (square_plus_3 4))
