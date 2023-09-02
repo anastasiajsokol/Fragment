@@ -269,8 +269,13 @@ class ExpressionStream {
                  *  @return reference to stream 
                 **/
                 ExpressionStreamIterator& operator ++() noexcept(false) {
-                    cursor = read_block_into_expression(*stream);
-                    ++stream;
+                    if(stream != end){
+                        cursor = read_block_into_expression(*stream);
+                        ++stream;
+                    } else {
+                        cursor = Expression::expression_t(nullptr);
+                    }
+
                     return *this;
                 }
 

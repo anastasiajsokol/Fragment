@@ -17,9 +17,9 @@ Value::value_t FunctionExpression::operator ()(ProgramState& state) const {
 
     std::list<Value::value_t> values;
 
-    for(auto &argument : arguments){
+    for(const auto &argument : arguments){
         values.push_back((*argument)(state));
     }
     
-    return (std::get<std::function<Value::value_t(std::list<Value::value_t>)>>(f->value))(values);
+    return (std::get<std::function<Value::value_t(std::list<Value::value_t>)>>(f->value))(std::move(values));
 }
