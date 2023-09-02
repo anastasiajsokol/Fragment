@@ -1,2 +1,6 @@
+(%%
+    super simple program that still manages to use many of the basic language features
+%%)
+
 (define add (lambda (a b) (+ a b)))
 (println "2 + 39 = " (add 2 39))

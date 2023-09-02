@@ -1,9 +1,16 @@
+(%%
+    A simple program demonstrating the difference between a self expression and an atomic expression.
+    While they appear similar,
+        in the first example "(readnumeric)" will read a number from the user
+        and in the second example "readnumeric" itself will be saved to value
+%%)
+
 (define square (lambda (n) (* n n)))
 
 (print "Enter a number: ")
-(define value (readnumeric)) (%% "here readnumeric is a self expression")
-(println value " squared is " (square value))
+(define value (readnumeric)) (%% here readnumeric is a self expression)
+(println value " squared is " (square value)) (%% prints $value squared is $(value * value) with whatever numbers provided)
 
 (print "Enter a number: ")
 (define value readnumeric) (%% here readnumeric is an atomic expression)
-(println value " squared is " (square value))
+(println value " squared is " (square value)) (%% prints Enter a number: λ(...) squared is λ(...))

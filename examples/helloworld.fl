@@ -1,0 +1,5 @@
+(%%
+    Really the most important thing for any language, printing "Hello World" to the console
+%%)
+
+(println "Hello World")

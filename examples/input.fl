@@ -1,3 +1,7 @@
+(%%
+    a simple example of how to read input from the user
+%%)
+
 (define square (lambda (n) (* n n)))
 (print "Enter a number: ")
 (define value (readnumeric))
