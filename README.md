@@ -29,7 +29,7 @@ While the details of how each operation interacts between different types (and n
 All languages are made up of expressions, and Fragment is no different
 
     atomic := numeric | stringliteral | boolean | reference
-        Atomic expressions are the simplest, representing a single value and of the form
+        Atomic expressions are the simplest, representing a single value
     
     self := (expression)
         Self expressions are similar to atomic expressions in that they represent only one thing, however here functions get evaluated with no arguments
@@ -41,7 +41,7 @@ All languages are made up of expressions, and Fragment is no different
     define := ('define' reference expression)
         Sets the provided reference to the value of the expression, starts with 'define' keyword
     
-    lambda := ('lambda' (reference reference*) expression)
+    lambda := ('lambda' (reference*) expression)
         Defines a function that takes in arguments (a block of references) and passes them into the expression, starts with 'lambda' keyword
     
     conditional := ('if' expression expression expression)
