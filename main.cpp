@@ -15,6 +15,7 @@
 #include "datatype/invalidstate.hpp"    // defines InvalidState exception
 #include "utility/standardlibrary.h"    // defines interface for standard library functions
 #include "value/functionvalue.h"        // define FunctionValue for wrapping standard library functions
+#include "value/notimplemented.hpp"     // defines NotImplemented exception
 
 #include <ios>                      // defines std::ios_base::failure for file io errors (also defined in lexer/lexstream.hpp but that is not generally guaranteed)
 
@@ -51,18 +52,20 @@ int main(int argc, char **argv){
             (*expression)(state);
         }
     } catch(std::ios_base::failure error){
-        std::fprintf(stderr, "File Error\n\t%s\n", error.what());
+        std::fprintf(stderr, "\033[31mFile Error\033[39m\n\t%s\n", error.what());
         return EXIT_FAILURE;
     } catch(lexer::InvalidLexeme error) {
-        std::fprintf(stderr, "Invalid Lexeme Exception\n\terror: %s\n\tposition: (%ld, %ld) in file %s\n", error.what(), error.position.line, error.position.index, filepath);
+        std::fprintf(stderr, "\033[31mInvalid Lexeme Exception\033[39m\n\terror: %s\n\tposition: (%ld, %ld) in file %s\n", error.what(), error.position.line, error.position.index, filepath);
         return EXIT_FAILURE;
     } catch(parser::InvalidBlock error) {
-        std::fprintf(stderr, "Invalid Block Exception\n\terror: %s\n\tposition: (%ld, %ld) in file %s\n", error.what(), error.position.line, error.position.index, filepath);
+        std::fprintf(stderr, "\033[31mInvalid Block Exception\033[39m\n\terror: %s\n\tposition: (%ld, %ld) in file %s\n", error.what(), error.position.line, error.position.index, filepath);
         return EXIT_FAILURE;
-    } catch(InvalidState error){
-        std::fprintf(stderr, "Invalid Program State\n\terror: %s\n\tposition: file %s\n", error.what(), filepath);
     } catch(InvalidExpression error){
-        std::fprintf(stderr, "Invalid Expression\n\terror: %s\n\tposition: (%ld, %ld) in file %s\n", error.what(), error.position.line, error.position.index, filepath);
+        std::fprintf(stderr, "\033[31mInvalid Expression\033[39m\n\terror: %s\n\tposition: (%ld, %ld) in file %s\n", error.what(), error.position.line, error.position.index, filepath);
+    } catch(InvalidState error){
+        std::fprintf(stderr, "\033[31mInvalid Program State\033[39m\n\terror: %s\n\tposition: file %s\n", error.what(), filepath);
+    } catch(NotImplemented error){
+        std::fprintf(stderr, "\033[31mOperation Not Implemented\033[39m\n\terror: %s\n\tposition: file %s\n", error.what(), filepath);
     }
 
     return EXIT_SUCCESS;
