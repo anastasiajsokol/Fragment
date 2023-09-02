@@ -131,7 +131,7 @@ class ExpressionStream {
                             ));
                         } else if(keyword == "lambda"){
                             if(block.size() != 3){
-                                throw InvalidExpression(block.position, "The 'define' expression expects 2 parameters; a set of references and a body expression. Got " + std::to_string(block.size() - 1));
+                                throw InvalidExpression(block.position, "The 'lambda' expression expects 2 parameters; a set of references and a body expression. Got " + std::to_string(block.size() - 1));
                             }
 
                             auto members = block.view.begin();
