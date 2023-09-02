@@ -1,7 +1,7 @@
-# Makefile for FragmentLisp
+# Makefile for Fragment
 
-TARGET = FragmentLisp
-SRC_FILES = main.cpp lexer/lexstream.cpp datatype/token.cpp
+TARGET = Fragment
+SRC_FILES = main.cpp lexer/lexstream.cpp utility/standardlibrary.cpp datatype/programstate.cpp datatype/token.cpp datatype/block.cpp expression/lambdaexpression.cpp expression/conditionalexpression.cpp expression/operatorexpression.cpp expression/atomicexpression.cpp expression/selfexpression.cpp expression/defineexpression.cpp expression/functionexpression.cpp value/numericvalue.cpp value/booleanvalue.cpp value/functionvalue.cpp value/stringvalue.cpp value/value.cpp value/valuetype.cpp
 
 # NO EDITS NEEDED BELOW THIS LINE
 
