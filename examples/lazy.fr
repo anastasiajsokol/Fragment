@@ -1,0 +1,8 @@
+(%%
+    Demonstrates how functions are lazily operated on
+%%)
+
+(define f (lambda (x) (* x x)))
+(define g (+ f 2)) (%% g is now (lambda (x) (+ (* x x) 2)))
+
+(println (g 8)) (%% prints 66)
