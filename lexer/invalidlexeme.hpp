@@ -30,6 +30,6 @@ struct InvalidLexeme : std::runtime_error {
     inline InvalidLexeme(const std::string& message, const Token::TokenPosition& position) noexcept : std::runtime_error(message), position(position) {}
 };
 
-}; // end of namespace lexer
+} // end of namespace lexer
 
 #endif

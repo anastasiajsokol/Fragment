@@ -186,6 +186,6 @@ class BlockStream {
         }
 };
 
-}; // end of namespace parser
+} // end of namespace parser
 
 #endif

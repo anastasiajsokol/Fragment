@@ -187,7 +187,7 @@ value_t FunctionValue::operator !() const noexcept(false){
 
 FunctionValue::operator std::string() const {
     return "λ(...)";
-};
+}
 
 FunctionValue::operator bool() const {
     return true;

@@ -28,6 +28,6 @@ struct InvalidBlock : std::runtime_error {
     inline InvalidBlock(const std::string& message, const Token::TokenPosition& position) noexcept : std::runtime_error(message), position(position) {}
 };
 
-}; // end of namespace parser
+} // end of namespace parser
 
 #endif

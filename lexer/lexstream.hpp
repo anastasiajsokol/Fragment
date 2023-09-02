@@ -184,6 +184,6 @@ class LexStream {
         }
 };
 
-}; // end of namespace lexer
+} // end of namespace lexer
 
 #endif
