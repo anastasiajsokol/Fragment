@@ -33,7 +33,7 @@ int main(int argc, char **argv){
         std::puts("Fragment Interpeter v. 1.0");
         return EXIT_SUCCESS;
     } else if(!std::strcmp(argv[1], "-h") || !std::strcmp(argv[1], "--help")){
-        std::puts("Fragment Interpeter v. 1.0\n\tallowed parameters: -v, --version, -h, --help, or an input file path\n\tunfortunately no documentation is currently available");
+        std::puts("Fragment Interpeter v. 1.0\n\tallowed parameters: -v, --version, -h, --help, or an input file path\n\tsee README.md for more information");
         return EXIT_SUCCESS;
     }
     
