@@ -17,10 +17,10 @@
 #include "value/functionvalue.h"        // define FunctionValue for wrapping standard library functions
 #include "value/notimplemented.hpp"     // defines NotImplemented exception
 
-#include <ios>                      // defines std::ios_base::failure for file io errors (also defined in lexer/lexstream.hpp but that is not generally guaranteed)
+#include <ios>                          // defines std::ios_base::failure for file io errors (also defined in lexer/lexstream.hpp but that is not generally guaranteed)
 
-#include <cstdio>                   // defines std::fprintf, stderr, EXIT_FAILURE, and EXIT_SUCCESS for reporting program execution state
-#include <cstring>                  // defines std::strcmp
+#include <cstdio>                       // defines std::fprintf, stderr, EXIT_FAILURE, and EXIT_SUCCESS for reporting program execution state
+#include <cstring>                      // defines std::strcmp
 
 int main(int argc, char **argv){
     // command interface
