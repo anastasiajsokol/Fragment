@@ -44,10 +44,10 @@ int main(int argc, char **argv){
         // setup program state
         ProgramState state;
 
-        state.set("print", Value::value_t(new FunctionValue(flstd::print)));
-        state.set("println", Value::value_t(new FunctionValue(flstd::println)));
-        state.set("readline", Value::value_t(new FunctionValue(flstd::readline)));
-        state.set("readnumeric", Value::value_t(new FunctionValue(flstd::readnumeric)));
+        state.set("print", Value::value_t(new FunctionValue(frstd::print)));
+        state.set("println", Value::value_t(new FunctionValue(frstd::println)));
+        state.set("readline", Value::value_t(new FunctionValue(frstd::readline)));
+        state.set("readnumeric", Value::value_t(new FunctionValue(frstd::readnumeric)));
         
         // build and run program
         for(const auto& expression : parser::ExpressionStream(parser::BlockStream(lexer::LexStream(filepath)))){

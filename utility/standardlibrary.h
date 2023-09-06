@@ -8,7 +8,7 @@
 
 #include <list>                 // defines std::list
 
-namespace flstd {
+namespace frstd {
 
 /**
  *  @brief takes a list of values and prints them out
@@ -38,4 +38,4 @@ Value::value_t readline(std::list<Value::value_t>);
 **/
 Value::value_t readnumeric(std::list<Value::value_t>);
 
-}  // end of namespace flstd
+}  // end of namespace frstd
